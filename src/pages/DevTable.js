@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Checkbox, Select, InputLabel, MenuItem, TextField, FormControl } from '@mui/material';
+import { Checkbox, Select, InputLabel, MenuItem, TextField, FormControl, Button } from '@mui/material';
 import MaxWidthDialog from './MaxWidthDialog';
 import DevDialog from './DevDialog';
 import { v4 as uuidv4 } from 'uuid';
@@ -44,9 +44,9 @@ export default function DevTable() {
 
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [tableContent, setTableContent] = React.useState(columns);
-    const [sandiTxtProp, setSandiTxtProp] = React.useState();
-    const [someVal, setSomeVal] = React.useState();
-    const [klpTxtProp, setKlpTxtProp] = React.useState('');
+    const [sandiTxtProp, setSandiTxtProp] = React.useState('');
+    const [queryRes, setQueryRes] = React.useState('');
+    const [resLine, setResLine] = React.useState(2);
     //let lookupVal = '3';
 
     const handleCheckboxChange = (row, idx) => {
@@ -102,10 +102,14 @@ export default function DevTable() {
         console.log("lookupVal: ", JSON.stringify(lookupVal) );
     }*/
 
-    const handleSandi = (e) => {
+    const handleSandi = (e, idx) => {
+        const tempTable = [...tableContent];
         if (e !== null) {
             console.log("Sandi Text: " + e);
-            setSandiTxtProp(e)
+            setSandiTxtProp(e.target.value);
+            tempTable[idx].filterVal = e.target.value;
+            setTableContent(tempTable);
+            fillSelectedRows();
         }
         
     };
@@ -137,17 +141,45 @@ export default function DevTable() {
                 selectedRows.push(row);
             }
         });
-        //console.log(selectedRows);
-    } 
-    
+        console.log('Selected Row: ',selectedRows);
+    }
+
+    const setMaxRowResult = (q) => {
+        let rowMax = q.split(/\r\n|\r|\n/).length + 1;
+        setResLine(rowMax);
+    }
+
+    const generateQuery = (obj) => {
+        let arrField = [];
+        let whereQue = [];
+        if (obj.length !== 0) {    
+            obj.map((row) => {
+                if (arrField !== null) {
+                    arrField = arrField + ', ' + row.fieldName;
+                } else {
+                    arrField = row.colName;
+                }
+                if (row.filterCheck == true && row.filterVal !== '') { // Where or Aggregate
+                    if (whereQue !== null) {
+                        whereQue = whereQue + ' AND\n' + row.fieldName + row.filterVal + row.strSandi;
+                    } else {
+                        whereQue = row.fieldName + row.filterVal + row.strSandi;
+                    }
+                }
+            });
+        }
+        let resQuery = 'SELECT ' + arrField + '\n' + whereQue;
+        setMaxRowResult(resQuery);
+        setQueryRes(resQuery);
+    }
 
     React.useEffect(() => {
-        console.log('Selected Row: ', selectedRows)
-    }, [])
+        //console.log('Selected Row: ', selectedRows)
+    }, [selectedRows])
 
     return (
         
-        <Paper sx={{ width: '125%', overflow: 'hidden' }}>
+        <Box sx={{ width: '100%', overflow: 'hidden' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -221,19 +253,23 @@ export default function DevTable() {
                                     {
                                         (row.condition === '0')
                                         ?
-                                        <FormControl width="100%">
+                                        <FormControl width="20%">
                                         <TextField
+                                                    name="filterVal"
+                                                    //label="Enter text"
+                                                    //placeholder="Placeholder"
                                             id="filled-basic"
                                             variant="filled"
-                                            type="search"
-                                            value={sandiTxtProp}
-                                            //onChange={() => handleSandi}
+                                                    type="search"
+                                                    defaultValue={row.filterVal}
+                                                    onChange={(e) => handleSandi(e, index)}
+                                            //onBlur={(e) => handleSandi(e,index)}
                                             //inputProps={klpTxtProp}
                                         />
                                         </FormControl>
                                             :
                                         /*<LookupContext.Provider value={lookupVal}>*/
-                                        <FormControl width="100%">
+                                        <FormControl width="20%">
                                         <TextField
                                                     id="filled-search"
                                                     variant="filled"
@@ -253,7 +289,6 @@ export default function DevTable() {
                                         </FormControl>
                                         /*</LookupContext.Provider>*/
                                     }
-                                    
                                     </TableCell>
                                 
                             </TableRow>
@@ -261,18 +296,24 @@ export default function DevTable() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Container sx={{ left: 'tooltip'}}>
+            <Container
+                //sx={{ left: 'tooltip' }}
+            >
                 <TextField
                 id="filled-multiline-static"
                 label="Multiline"
                 multiline
-                rows={5}
+                rows={resLine}
                 defaultValue="Default Value"
-                variant="filled"
-            />
-            </Container>
-            
-            </Paper>
+                    variant="filled"
+                    fullWidth="true"
+                />&nbsp;
+                <Button variant="contained"
+                    onClick={() => generateQuery(selectedRows)}
+                >Generate</Button>
+            </Container>    
+        </Box>
+
             
     );
 }
