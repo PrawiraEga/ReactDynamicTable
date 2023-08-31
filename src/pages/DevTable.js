@@ -1,6 +1,7 @@
 // "use client"
 
 import * as React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,28 +17,34 @@ import { v4 as uuidv4 } from 'uuid';
 import { Box, Container, Grid } from '@mui/system';
 import { LookupContext } from '../context/LookupContext';
 
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
 
-function columnData(id, fieldName, labelName, condition, isCheck, strSandi, filterCheck, filterVal) {
+function columnData(id, fieldName, labelName, colType, condition, isCheck, strSandi, filterCheck, filterVal) {
     let colName = fieldName.toUpperCase();
-    return { id, colName, labelName, condition, isCheck, strSandi, filterCheck, filterVal };
+    return { id, colName, labelName, colType, condition, isCheck, strSandi, filterCheck, filterVal };
 }
 
 const columns = [
-    columnData(uuidv4(), 'nomorrekening', 'Nomor Rekening', '0', false, '', false, ''),
-    columnData(uuidv4(), 'jeniskreditpembiayaan', 'Jenis Kredit Pembiayaan', '1', false, '', false, ''),
-    columnData(uuidv4(), 'nomorakadawal', 'Nomor Akad Awal', '0', false, '', false, ''),
-    columnData(uuidv4(), 'nomorakadakhir', 'Nomor Akad Akhir', '0', false, '', false, ''),
-    columnData(uuidv4(), 'kategoriusahadebitur', 'Kategori Usaha Debitur', '2', false, '', false, ''),
-    columnData(uuidv4(), 'kategoriportofolio', 'Kategori Portofolio', '1', false, '', false, ''),
-    columnData(uuidv4(), 'skimpembiayaansyariah', 'Skim Pembiayaan Syariah', '0', false, '', false, ''),
-    columnData(uuidv4(), 'jenisakad', 'Jenis Akad', '1', false, '', false, ''),
-    columnData(uuidv4(), 'karakteristiksumberdana', 'Karakteristik Sumber Dana', '1', false, '', false, ''),
-    columnData(uuidv4(), 'sifatinvestasi', 'Sifat Investasi', '1', false, '', false, ''),
-    columnData(uuidv4(), 'metodebagihasil', 'Metode Bagi Hasil', '0', false, '', false, ''),
-    columnData(uuidv4(), 'persentasenisbah', 'Persentase Nisbah', '0', false, '', false, ''),
-    columnData(uuidv4(), 'persentaserbhterhadappbh', 'Persentase RBH terhada PPBH', '0', false, '', false, ''),
-    columnData(uuidv4(), 'sifatkreditpembiayaan', 'Sifat Kredit Pembiayaan', '1', false, '', false, ''),
-    columnData(uuidv4(), 'jenispenggunaan', 'Jenis Penggunaan', '1', false, '', false, ''),
+    columnData(uuidv4(), 'nomorrekening', 'Nomor Rekening', 'string', '0', false, '', false, ''),
+    columnData(uuidv4(), 'jeniskreditpembiayaan', 'Jenis Kredit Pembiayaan', 'string', '1', false, '', false, ''),
+    columnData(uuidv4(), 'nomorakadawal', 'Nomor Akad Awal', 'string', '0', false, '', false, ''),
+    columnData(uuidv4(), 'nomorakadakhir', 'Nomor Akad Akhir', 'string', '0', false, '', false, ''),
+    columnData(uuidv4(), 'kategoriusahadebitur', 'Kategori Usaha Debitur', 'string', '2', false, '', false, ''),
+    columnData(uuidv4(), 'kategoriportofolio', 'Kategori Portofolio', 'string', '1', false, '', false, ''),
+    columnData(uuidv4(), 'skimpembiayaansyariah', 'Skim Pembiayaan Syariah', 'string', '0', false, '', false, ''),
+    columnData(uuidv4(), 'jenisakad', 'Jenis Akad', 'string', '1', false, '', false, ''),
+    columnData(uuidv4(), 'karakteristiksumberdana', 'Karakteristik Sumber Dana', 'string', '1', false, '', false, ''),
+    columnData(uuidv4(), 'sifatinvestasi', 'Sifat Investasi', 'string', '1', false, '', false, ''),
+    columnData(uuidv4(), 'metodebagihasil', 'Metode Bagi Hasil', 'number', '0', false, '', false, ''),
+    columnData(uuidv4(), 'persentasenisbah', 'Persentase Nisbah', 'number', '0', false, '', false, ''),
+    columnData(uuidv4(), 'persentaserbhterhadappbh', 'Persentase RBH terhada PPBH', 'number', '0', false, '', false, ''),
+    columnData(uuidv4(), 'sifatkreditpembiayaan', 'Sifat Kredit Pembiayaan', 'string', '1', false, '', false, ''),
+    columnData(uuidv4(), 'jenispenggunaan', 'Jenis Penggunaan', 'string', '1', false, '', false, ''),
+    columnData(uuidv4(), 'hargaperolehanaset', 'Harga Perolehan Aset', 'string', '0', false, '', false, ''),
 ];
 
 export default function DevTable() {
@@ -52,15 +59,21 @@ export default function DevTable() {
     const handleCheckboxChange = (row, idx) => {
         if (selectedRows.includes(row)) {
             setSelectedRows(selectedRows.filter((id) => id !== row));
-            if (tableContent[idx].isCheck === true) {
-                tableContent[idx].isCheck = false
+            if (tableContent[idx].isCheck === true) { // When?
+                tableContent[idx].isCheck = false;
+                tableContent[idx].filterCheck = false;
+                tableContent[idx].filterVal = '';
+                tableContent[idx].strSandi = '';
             } else {
-                tableContent[idx].isCheck = true
+                tableContent[idx].isCheck = true;
             }
             fillSelectedRows();
         } else {
             if (tableContent[idx].isCheck === true) {
-                tableContent[idx].isCheck = false
+                tableContent[idx].isCheck = false;
+                tableContent[idx].filterCheck = false;
+                tableContent[idx].filterVal = '';
+                tableContent[idx].strSandi = '';
             } else {
                 tableContent[idx].isCheck = true
             }
@@ -105,13 +118,39 @@ export default function DevTable() {
     const handleSandi = (e, idx) => {
         const tempTable = [...tableContent];
         if (e !== null) {
-            console.log("Sandi Text: " + e);
-            setSandiTxtProp(e.target.value);
-            tempTable[idx].filterVal = e.target.value;
+            //console.log("Sandi Text: " + e);
+            //setSandiTxtProp(e.target.value);
+            tempTable[idx].isCheck = true;
+            tempTable[idx].filterCheck = true;
+            tempTable[idx].strSandi = "'" + e.target.value + "'";
+            tempTable[idx].filterVal = "=";
+            console.log("Temp Table: ", tempTable);
             setTableContent(tempTable);
             fillSelectedRows();
         }
-        
+    };
+
+    const handleEdit = (e, idx) => {
+        const tempTable = [...tableContent];
+        if (e.target.value !== null && e.target.value !== "") {
+            //console.log("Sandi Text: " + e);
+            //setSandiTxtProp(e.target.value);
+            //tempTable[idx].isCheck = true;
+            //tempTable[idx].filterCheck = true;
+            tempTable[idx].strSandi = e.target.value;
+            //tempTable[idx].filterVal = "IN";
+            console.log("Temp Table: ", tempTable);
+            setTableContent(tempTable);
+            fillSelectedRows();
+        } else {
+            tempTable[idx].isCheck = false;
+            tempTable[idx].filterCheck = false;
+            tempTable[idx].strSandi = e.target.value;
+            tempTable[idx].filterVal = "";
+            console.log("Temp Table: ", tempTable);
+            setTableContent(tempTable);
+            fillSelectedRows();
+        }
     };
 
     const onSandiVal = (events, callback = () => {}) => {
@@ -120,27 +159,34 @@ export default function DevTable() {
         let sandiStr = events[1];
         console.log("index: ", index);
         console.log("sandistr: ", sandiStr);
-        columns[index].strSandi = sandiStr;
+        //columns[index].strSandi = sandiStr;
         console.log("columns: ", columns);
         const tempTable = [...tableContent];
+        tempTable[index].isCheck = true;
         tempTable[index].strSandi = sandiStr;
         tempTable[index].filterCheck = true;
+        tempTable[index].filterVal = "IN";
         setTableContent(tempTable);
         console.log("Temp Table: ", tempTable);
         fillSelectedRows();
+        //generateQuery(tempTable);
     }
 
     //this.handleSandi = this.handleSandi.bind(this);
 
 
     // console.log(selectedRows.data);
-    const fillSelectedRows = () => {
+    const fillSelectedRows = async () => {
         setSelectedRows([]);
         tableContent.map((row) => {
             if (row.isCheck) {
+                if (row.strSandi) {
+                    row.strSandi = "(" + row.strSandi + ")";
+                }
                 selectedRows.push(row);
             }
         });
+        await generateQuery(selectedRows);
         console.log('Selected Row: ',selectedRows);
     }
 
@@ -150,35 +196,51 @@ export default function DevTable() {
     }
 
     const generateQuery = (obj) => {
-        let arrField = [];
-        let whereQue = [];
+        let arrField = null;
+        let whereQue = null;
         if (obj.length !== 0) {    
             obj.map((row) => {
                 if (arrField !== null) {
-                    arrField = arrField + ', ' + row.fieldName;
+                    arrField = arrField + ', ' + row.colName;
                 } else {
                     arrField = row.colName;
                 }
                 if (row.filterCheck == true && row.filterVal !== '') { // Where or Aggregate
                     if (whereQue !== null) {
-                        whereQue = whereQue + ' AND\n' + row.fieldName + row.filterVal + row.strSandi;
+                        if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
+                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
+                        } else {
+                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
+                        }
+                        
                     } else {
-                        whereQue = row.fieldName + row.filterVal + row.strSandi;
+                        if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
+                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
+                        } else {
+                            whereQue = 'WHERE ' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
+                        }
+                        
                     }
+                } else {
+
                 }
             });
         }
         let resQuery = 'SELECT ' + arrField + '\n' + whereQue;
         setMaxRowResult(resQuery);
         setQueryRes(resQuery);
+        console.log("Result Query: ", resQuery);
     }
 
     React.useEffect(() => {
         //console.log('Selected Row: ', selectedRows)
+        if (selectedRows.length !== 0) {
+            generateQuery(selectedRows);
+        }
     }, [selectedRows])
 
     return (
-        
+        /*<ThemeProvider theme={darkTheme}>*/
         <Box sx={{ width: '100%', overflow: 'hidden' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -233,12 +295,12 @@ export default function DevTable() {
                                 <TableCell align="right">
                                     {/*<InputLabel id="operator-select-label">Equal</InputLabel>*/}
                                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                        <InputLabel id="demo-select-small-label">Operator</InputLabel>
+                                        {/*<InputLabel id="demo-select-small-label">Operator</InputLabel>*/}
                                         <Select
                                             labelId="operator-select-label"
                                             id="operator-select"
-                                            //value={row.filterVal}
-                                            label="Operator"
+                                            value={row.filterVal}
+                                            //label="Operator"
                                             onChange={e => OprHandleChange(e,index)}
                                         >
                                             <MenuItem value=""><em>None</em></MenuItem>
@@ -261,7 +323,7 @@ export default function DevTable() {
                                             id="filled-basic"
                                             variant="filled"
                                                     type="search"
-                                                    defaultValue={row.filterVal}
+                                                    defaultValue={row.strSandi}
                                                     onChange={(e) => handleSandi(e, index)}
                                             //onBlur={(e) => handleSandi(e,index)}
                                             //inputProps={klpTxtProp}
@@ -269,15 +331,16 @@ export default function DevTable() {
                                         </FormControl>
                                             :
                                         /*<LookupContext.Provider value={lookupVal}>*/
-                                        <FormControl width="20%">
+                                        <FormControl width="20%" display="flex" flex-direction="row">
                                         <TextField
                                                     id="filled-search"
                                                     variant="filled"
                                                     type="search"
                                                     name="freeTxt"
+                                                    defaultValue={row.strSandi}
                                                     value={row.strSandi}
-                                                    //onBlur={() => sandiVal}
-                                            // onChange={() => this.handleSandi.bind(this)}
+                                                    onChange={(e) => handleEdit(e,index)}
+                                                    //onChange={(e) => handleSandi(e, index)}
                                         //inputProps={klpTxtProp}
                                         /> {}
                                         <DevDialog
@@ -289,7 +352,7 @@ export default function DevTable() {
                                         </FormControl>
                                         /*</LookupContext.Provider>*/
                                     }
-                                    </TableCell>
+                                </TableCell>
                                 
                             </TableRow>
                         ))}
@@ -313,7 +376,7 @@ export default function DevTable() {
                 >Generate</Button>
             </Container>    
         </Box>
-
+        /*</ThemeProvider>*/
             
     );
 }

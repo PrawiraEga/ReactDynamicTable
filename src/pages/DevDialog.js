@@ -62,7 +62,7 @@ export default function DevDialog(props) {
             let rowitVal = [rowIndex, val];
             sandiVal = rowitVal;
             let valSandi = props.sandiVal;
-            console.log("Handle Sandi D: ", valSandi(rowitVal));
+            valSandi(rowitVal);
             setOpen(false);
         }
     }

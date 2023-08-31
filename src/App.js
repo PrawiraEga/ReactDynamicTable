@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -10,8 +11,15 @@ import DevTable from './pages/DevTable';
 import DevTableSandi from './pages/DevTableSandi';
 import DevTableInput from './pages/DevTableInput';
 
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
+
 function App() {
     return (
+        /*<ThemeProvider theme={darkTheme}>*/
         <Router>
             <div className="App">
                 <CustomAppBar />
@@ -40,7 +48,8 @@ function App() {
         </a>
       </header>
       </div>*/}
-    </Router>
+        </Router>
+        /*</ThemeProvider>*/
   );
 }
 
