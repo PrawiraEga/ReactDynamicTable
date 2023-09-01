@@ -44,7 +44,7 @@ const columns = [
     columnData(uuidv4(), 'persentaserbhterhadappbh', 'Persentase RBH terhada PPBH', 'number', '0', false, '', false, ''),
     columnData(uuidv4(), 'sifatkreditpembiayaan', 'Sifat Kredit Pembiayaan', 'string', '1', false, '', false, ''),
     columnData(uuidv4(), 'jenispenggunaan', 'Jenis Penggunaan', 'string', '1', false, '', false, ''),
-    columnData(uuidv4(), 'hargaperolehanaset', 'Harga Perolehan Aset', 'string', '0', false, '', false, ''),
+    columnData(uuidv4(), 'hargaperolehanaset', 'Harga Perolehan Aset', 'number', '0', false, '', false, ''),
 ];
 
 export default function DevTable() {
@@ -118,15 +118,26 @@ export default function DevTable() {
     const handleSandi = (e, idx) => {
         const tempTable = [...tableContent];
         if (e !== null) {
+            if (tempTable[idx].colType === 'number') {
+                tempTable[idx].isCheck = true;
+                tempTable[idx].filterCheck = false;
+                tempTable[idx].strSandi = e.target.value;
+                //tempTable[idx].filterVal = "=";
+                console.log("Temp Table: ", tempTable);
+                setTableContent(tempTable);
+                fillSelectedRows();
+            } else {
+                tempTable[idx].isCheck = true;
+                tempTable[idx].filterCheck = true;
+                tempTable[idx].strSandi = e.target.value;
+                tempTable[idx].filterVal = "=";
+                console.log("Temp Table: ", tempTable);
+                setTableContent(tempTable);
+                fillSelectedRows();
+            }
             //console.log("Sandi Text: " + e);
             //setSandiTxtProp(e.target.value);
-            tempTable[idx].isCheck = true;
-            tempTable[idx].filterCheck = true;
-            tempTable[idx].strSandi = "'" + e.target.value + "'";
-            tempTable[idx].filterVal = "=";
-            console.log("Temp Table: ", tempTable);
-            setTableContent(tempTable);
-            fillSelectedRows();
+            
         }
     };
 
@@ -181,7 +192,7 @@ export default function DevTable() {
         tableContent.map((row) => {
             if (row.isCheck) {
                 if (row.strSandi) {
-                    row.strSandi = "(" + row.strSandi + ")";
+                    row.strSandi = row.strSandi;
                 }
                 selectedRows.push(row);
             }
@@ -198,35 +209,44 @@ export default function DevTable() {
     const generateQuery = (obj) => {
         let arrField = null;
         let whereQue = null;
+        let agrQue = null;
         if (obj.length !== 0) {    
             obj.map((row) => {
                 if (arrField !== null) {
-                    arrField = arrField + ', ' + row.colName;
+                    if (row.colType === 'number' && row.filterCheck === false) { // Set Agr
+                        agrQue = 'SUM(' + row.colName + ')';
+                        arrField = arrField + ", " + agrQue;
+                    } else {
+                        arrField = arrField + ', ' + row.colName;
+                    }
                 } else {
-                    arrField = row.colName;
+                    if (row.colType === 'number' && row.filterCheck === false) {
+                        agrQue = 'SUM(' + row.colName + ')';
+                        arrField = agrQue;
+                    } else {
+                        arrField = row.colName;
+                    }
                 }
-                if (row.filterCheck == true && row.filterVal !== '') { // Where or Aggregate
+                if (row.filterCheck == true && row.filterVal !== '') { // Set Where
                     if (whereQue !== null) {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
                             whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
                         } else {
-                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
+                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + "'" + row.strSandi + "'";
                         }
-                        
                     } else {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
                             whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
                         } else {
-                            whereQue = 'WHERE ' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
+                            whereQue = 'WHERE ' + row.colName + ' ' + row.filterVal + ' ' + "'" + row.strSandi + "'";
                         }
-                        
                     }
                 } else {
-
+                    
                 }
             });
         }
-        let resQuery = 'SELECT ' + arrField + '\n' + whereQue;
+        let resQuery = 'SELECT ' + arrField + ' FROM LBULB11_ORI' + '\n' + whereQue;
         setMaxRowResult(resQuery);
         setQueryRes(resQuery);
         console.log("Result Query: ", resQuery);
