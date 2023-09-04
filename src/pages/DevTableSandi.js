@@ -140,32 +140,32 @@ export default function DevTableSandi(props) {
 
                             </TableCell>
                             <TableCell align="left" width='15%'>&nbsp; SANDI &nbsp;</TableCell>
-                            <TableCell align="left" width='15%'>&nbsp; LABEL &nbsp;</TableCell>
+                            {/*<TableCell align="left" width='15%'>&nbsp; LABEL &nbsp;</TableCell>*/}
                             <TableCell align="left" width='50%'>&nbsp; KETERANGAN &nbsp;</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            Array.from(metaLookup).map((row) => (
+                            Array.from(metaLookup).map((row,idx) => (
                                 <TableRow
-                                    key={row.id}
+                                    key={idx}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             color="primary" align="left"
-                                            checked={selectedRows.includes(row.id)}
-                                            onChange={() => handleCheckboxChange(row.id)}
+                                            checked={selectedRows.includes(idx)}
+                                            onChange={() => handleCheckboxChange(idx)}
                                         />
                                     </TableCell>
-                                    <TableCell component="th" scope="row">
+                                    {/*<TableCell component="th" scope="row">
                                         {row.id}
+                                    </TableCell>*/}
+                                    <TableCell component="th" scope="row">
+                                        {row.sandi}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.label}
-                                    </TableCell>
-                                    <TableCell component="th" scope="row">
-                                        {row.ket}
+                                        {row.keterangan}
                                     </TableCell>
                                 </TableRow>
                             ))

@@ -16,6 +16,7 @@ import DevDialog from './DevDialog';
 import { v4 as uuidv4 } from 'uuid';
 import { Box, Container, Grid } from '@mui/system';
 import { LookupContext } from '../context/LookupContext';
+import dataColumns from '../KRP_01.json';
 
 const darkTheme = createTheme({
     palette: {
@@ -23,10 +24,26 @@ const darkTheme = createTheme({
     },
 });
 
-function columnData(id, fieldName, labelName, colType, condition, isCheck, strSandi, filterCheck, filterVal) {
+function columnData(id, fieldName, labelName, colType, isCheck, strSandi, filterCheck, filterVal, metadata) {
     let colName = fieldName.toUpperCase();
-    return { id, colName, labelName, colType, condition, isCheck, strSandi, filterCheck, filterVal };
+    return { id, colName, labelName, colType, isCheck, strSandi, filterCheck, filterVal, metadata };
 }
+
+var datColumns = [];
+const setColumns = dataColumns.columns;
+//console.log(JSON.parse(setColumns));
+async function setDatColumns(obj) {
+    let columns = [];
+    let rowData = null;
+    obj.map((row, idx) => {
+        rowData = columnData(idx, row.columnName, row.label, row.columnType, false, '', false, '', row.metadata)
+        columns.push(rowData)
+    });
+    datColumns = await columns;
+}
+
+setDatColumns(setColumns);
+
 
 const columns = [
     columnData(uuidv4(), 'nomorrekening', 'Nomor Rekening', 'string', '0', false, '', false, ''),
@@ -50,7 +67,7 @@ const columns = [
 export default function DevTable() {
 
     const [selectedRows, setSelectedRows] = React.useState([]);
-    const [tableContent, setTableContent] = React.useState(columns);
+    const [tableContent, setTableContent] = React.useState(datColumns);
     const [sandiTxtProp, setSandiTxtProp] = React.useState('');
     const [queryRes, setQueryRes] = React.useState('');
     const [resLine, setResLine] = React.useState(2);
@@ -333,7 +350,7 @@ export default function DevTable() {
                                 
                                 <TableCell align="left" width='65%'>
                                     {
-                                        (row.condition === '0')
+                                        (row.metadata === "")
                                         ?
                                         <FormControl width="20%">
                                         <TextField
@@ -364,9 +381,10 @@ export default function DevTable() {
                                         //inputProps={klpTxtProp}
                                         /> {}
                                         <DevDialog
-                                                    rowCondition={row.condition}
+                                                    //rowCondition={row.condition}
                                                     rowIndex={index}
                                                     sandiVal={onSandiVal}
+                                                    metadata={row.metadata}
                                         //sendSandi={handleSandi}
                                         />
                                         </FormControl>

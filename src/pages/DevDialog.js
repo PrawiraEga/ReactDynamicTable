@@ -45,10 +45,11 @@ export default function DevDialog(props) {
     let sandiVal = props.sandiVal;
     let rowCondition = props.rowCondition;
     let rowIndex = props.rowIndex;
+    let metadata = props.metadata;
 
     const handleClickOpen = () => {
         setOpen(true);
-        console.log("rowCondition:", JSON.stringify(rowCondition));
+        //console.log("rowCondition:", JSON.stringify(rowCondition));
     };
 
     const handleClose = () => {
@@ -94,12 +95,13 @@ export default function DevDialog(props) {
                 <DialogContent>
                     <DialogContentText>
                     </DialogContentText>
-                    {
+                    <DevTableSandi lookupMeta={metadata} sandiVal={handleSandi} />
+                    {/*{
                         rowCondition === '1' ?
                             <DevTableSandi lookupMeta={metaJenisPenggunaan} sandiVal={handleSandi} />
                             :
                             <DevTableSandi lookupMeta={metaKategoriUsaha} sandiVal={handleSandi} />
-                    }
+                    }*/}
                     
                     {/*<DevTableSandi changeSandi={handleChangeSandi} />*/}
                 </DialogContent>
