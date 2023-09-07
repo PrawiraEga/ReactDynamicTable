@@ -1,0 +1,196 @@
+{
+	"columns": [
+		{
+			"columnType": "string",
+			"columnName": "jenissifatkreditpembiayaan",
+			"label": "Sifat Kredit Pembiayaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Kredit/pembiayaan yang direstrukturisasi"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Pengambilalihan kredit/pembiayaan"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Kredit/pembiayaan subordinasi"
+				},
+				{
+					"sandi": "4",
+					"keterangan": "Pemindahan utang nasabah"
+				},
+				{
+					"sandi": "9",
+					"keterangan": "Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenispenggunaan",
+			"label": "Jenis Penggunaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Modal Kerja"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Investasi"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Konsumsi"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jeniskreditpembiayaan",
+			"label": "Jenis Kredit Pembiayaan",
+			"metadata": [
+				{
+					"sandi": "",
+					"keterangan": "Dengan perjanjian kredit/pembiayaan"
+				},
+				{
+					"sandi": "P01",
+					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan dalam rangka pembiayaan bersama (Sindikasi)"
+				},
+				{
+					"sandi": "P02",
+					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan kepada pihak ketiga melalui lembaga lain secara channeling"
+				},
+				{
+					"sandi": "P03",
+					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan kepada UMKM melalui lembaga lain secara executing"
+				},
+				{
+					"sandi": "P04",
+					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan kepada Non-UMKM melalui lembaga lain secara executing"
+				},
+				{
+					"sandi": "P05",
+					"keterangan": "&nbsp;&nbsp; Kartu Kredit/Kartu Pembiayaan Syariah"
+				},
+				{
+					"sandi": "P06",
+					"keterangan": "&nbsp;&nbsp; Surat berharga dengan Note Purchase Agreement (NPA)"
+				},
+				{
+					"sandi": "P07",
+					"keterangan": "&nbsp;&nbsp; Dalam Rangka Kepemilikan Emas"
+				},
+				{
+					"sandi": "P08",
+					"keterangan": "&nbsp;&nbsp; Gadai"
+				},
+				{
+					"sandi": "P09",
+					"keterangan": "&nbsp;&nbsp; Talangan Haji"
+				},
+				{
+					"sandi": "P99",
+					"keterangan": "&nbsp;&nbsp; Lainnya"
+				},
+				{
+					"sandi": "",
+					"keterangan": "Tanpa perjanjian kredit"
+				},
+				{
+					"sandi": "N01",
+					"keterangan": "&nbsp;&nbsp; Giro bersaldo debet"
+				},
+				{
+					"sandi": "N02",
+					"keterangan": "&nbsp;&nbsp; Tagihan atas transaksi perdagangan"
+				},
+				{
+					"sandi": "N99",
+					"keterangan": "&nbsp;&nbsp; Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenisvaluta",
+			"label": "Jenis Valuta",
+			"metadata": [
+				{
+					"sandi": "V99",
+					"keterangan": "Valuta Asing"
+				},
+				{
+					"sandi": "AFN",
+					"keterangan": "Afghanistan Afghani"
+				},
+				{
+					"sandi": "ALL",
+					"keterangan": "Albanian Lek"
+				},
+				{
+					"sandi": "DZD",
+					"keterangan": "Algerian Dinar"
+				},
+				{
+					"sandi": "USD",
+					"keterangan": "US Dollar"
+				},
+				{
+					"sandi": "AOA",
+					"keterangan": "Angolan Kwanza"
+				},
+				{
+					"sandi": "XCD",
+					"keterangan": "East Caribbean Dollar"
+				},
+				{
+					"sandi": "ARS",
+					"keterangan": "Argentine Peso"
+				},
+				{
+					"sandi": "AMD",
+					"keterangan": "Armenia Dram"
+				},
+				{
+					"sandi": "AWG",
+					"keterangan": "Aruban Florin"
+				},
+				{
+					"sandi": "AUD",
+					"keterangan": "Australian Dollar"
+				},
+				{
+					"sandi": "BHD",
+					"keterangan": "Bahraini Dinar"
+				},
+				{
+					"sandi": "BDT",
+					"keterangan": "Bangladesh Taka"
+				},
+				{
+					"sandi": "BBD",
+					"keterangan": "Barbados Dollar"
+				},
+				{
+					"sandi": "BZD",
+					"keterangan": "Belize Dollar"
+				}
+			]
+		},
+		{
+			"columnType": "number",
+			"columnName": "plafon",
+			"label": "Plafon",
+			"metadata": ""
+		},
+		{
+			"columnType": "number",
+			"columnName": "plafoninduk",
+			"label": "Plafon Induk",
+			"metadata": ""
+		}
+	]
+}
