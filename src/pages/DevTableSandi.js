@@ -19,15 +19,18 @@ function arrJP(id, label, ket) {
     return { id, label, ket };
 }
 
+
+
 /*const metaJenisPenggunaan = [
     arrJP(1, 'Modal Kerja', 'kredit/pembiayaan yang diperuntukkan sebagai modal kerja debitur yang bersangkutan.'),
     arrJP(2, 'Investasi', 'kredit/pembiayaan yang diperuntukkan sebagai pembelian barang modal dan jasa yang diperlukan guna rehabilitasi, modernisasi, ekspansi, relokasi usaha '),
     arrJP(3, 'Konsumsi', 'kredit/pembiayaan yang diperuntukkan untuk keperluan konsumsi'),
 ];*/
 
-function arrKU(grup, id, label, ket) {
-    return { grup, id, label, ket}
+function setMeta(isCheck, sandi, ket) {
+    return { isCheck, sandi, ket}
 }
+
 
 /*const metaKategoriUsaha = [
     arrKU('kategoriusahadebitur', 1, 'UM', 'Debitur Usaha Mikro, Kecil, dan Menengah – Mikro'),
@@ -42,33 +45,46 @@ export default function DevTableSandi(props) {
     //const { changeSandi } = props;
     let lookupMeta = props.lookupMeta;
     let sandiVal = props.sandiVal;
-
+    let rowDat;
 
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [strSandi, setStrSandi] = React.useState("");
     const [metaLookup, setMetaLookup] = React.useState([]);
 
-    const handleCheckboxChange = async (rowId) => {
-        changeSelectedRows(rowId);
+    const handleCheckboxChange = (row) => {
+        changeSelectedRows(row);
 
     }
 
-    function fillMetaLookup(obj) {
-        const lookup = { ...metaLookup, obj };
-        setMetaLookup(lookup.obj);
-        console.log("lookup meta: ", metaLookup);
+    async function fillMetaLookup(obj) {
+        //const data = { ...metaLookup, obj };
+        const objData = [];
+        for (var idx = 0; idx < obj.length; idx++) {
+            rowDat = setMeta(false, obj[idx].sandi, obj[idx].keterangan);
+            objData.push(rowDat);
+        }
+        await setMetaLookup(objData);
+        /*obj.map((row) => {
+            rowDat = setMeta(false, row.sandi, row.keterangan);
+            setMetaLookup(prevMeta => [...prevMeta, rowDat]);
+        })*/
+        //const lookup = { ...metaLookup, obj };
+        //setMetaLookup(lookup.obj);
+        await console.log("lookup meta: ", metaLookup);
     }
 
-    async function changeSelectedRows(rowId) {
+    async function changeSelectedRows(row) {
         var index;
         let tempselRows = [];
         if (selectedRows.length === 0) {
-            tempselRows = [...selectedRows, rowId];
+            //row.isCheck = true;
+            tempselRows = [...selectedRows, row.sandi];
             await setSelectedRows(tempselRows);
             await setArrSandiStr(tempselRows);
         } else {
-            if (selectedRows.includes(rowId)) {
-                index = selectedRows.indexOf(rowId);             
+            if (selectedRows.includes(row.sandi)) {
+                index = selectedRows.indexOf(row.sandi);
+                row.isCheck = false;
                 if (index >= -1) {    
                     selectedRows.splice(index, 1);
                     if (selectedRows.length !== 0) {
@@ -79,7 +95,8 @@ export default function DevTableSandi(props) {
                 }
                 
             } else {
-                tempselRows = [...selectedRows, rowId];
+                //row.isCheck = true;
+                tempselRows = [...selectedRows, row.sandi];
                 
                 await setSelectedRows(tempselRows);
                 await setArrSandiStr(tempselRows);
@@ -120,11 +137,11 @@ export default function DevTableSandi(props) {
         console.log("Array:" + selectedRows);
         fillMetaLookup(lookupMeta);
         // setArrSandiStr(selectedRows);
-    }, [selectedRows, lookup]);
+    }, [selectedRows, lookupMeta]);
 
     return (
         <Paper sx={{ width: '125%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer sx={{ maxHeight: 440, m: 0 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -146,7 +163,7 @@ export default function DevTableSandi(props) {
                     </TableHead>
                     <TableBody>
                         {
-                            Array.from(metaLookup).map((row,idx) => (
+                            metaLookup.map((row,idx) => (
                                 <TableRow
                                     key={idx}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -154,8 +171,9 @@ export default function DevTableSandi(props) {
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             color="primary" align="left"
-                                            checked={selectedRows.includes(idx)}
-                                            onChange={() => handleCheckboxChange(idx)}
+                                            checked={selectedRows.includes(row.sandi)}
+                                            onChange={() => handleCheckboxChange(row)}
+                                            value={row.isCheck}
                                         />
                                     </TableCell>
                                     {/*<TableCell component="th" scope="row">
@@ -165,7 +183,7 @@ export default function DevTableSandi(props) {
                                         {row.sandi}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.keterangan}
+                                        {row.ket}
                                     </TableCell>
                                 </TableRow>
                             ))

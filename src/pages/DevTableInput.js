@@ -103,28 +103,6 @@ export default function DevTableInput(props) {
         return addRow;
     }
 
-    const fillCheckboxIds= async (index) => {
-        const addIds = {
-            id: index,
-            name: 'checkbox_' + index,
-            value: false
-        }
-
-        await setCheckboxIds([...checkboxIds], addIds)
-        await console.log('Checkbox Id States' + checkboxIds);
-    }
-
-    const fillTxtfieldIds = async (index) => {
-        const addIds = {
-            id: index,
-            name: 'txtfield_' + (index),
-            value: ""
-        };
-
-        await setTxtfieldIds([...txtfieldIds], addIds);
-        await console.log('Checkbox Id States' + txtfieldIds);
-    }
-
     const handleCheckboxChange = (row) => {
         changeSelectedRows(row);
     }

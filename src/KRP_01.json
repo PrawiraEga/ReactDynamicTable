@@ -2,6 +2,12 @@
 	"columns": [
 		{
 			"columnType": "string",
+			"columnName": "iddebitur",
+			"label": "Debitur",
+			"metadata": ""
+		},
+		{
+			"columnType": "string",
 			"columnName": "jenissifatkreditpembiayaan",
 			"label": "Sifat Kredit Pembiayaan",
 			"metadata": [
@@ -48,6 +54,29 @@
 		},
 		{
 			"columnType": "string",
+			"columnName": "kategoriusahadebitur",
+			"label": "Kategori Usaha Debitur",
+			"metadata": [
+				{
+					"sandi": "UM",
+					"keterangan": "Debitur Usaha Mikro, Kecil, dan Menengah – Mikro"
+				},
+				{
+					"sandi": "UK",
+					"keterangan": "Debitur Usaha Mikro, Kecil, dan Menengah -Kecil"
+				},
+				{
+					"sandi": "UT",
+					"keterangan": "Debitur Usaha Mikro, Kecil, dan Menengah - Menengah"
+				},
+				{
+					"sandi": "NU",
+					"keterangan": "Bukan Debitur Usaha Mikro, Kecil, dan Menengah"
+				}
+			]
+		},
+		{
+			"columnType": "string",
 			"columnName": "jeniskreditpembiayaan",
 			"label": "Jenis Kredit Pembiayaan",
 			"metadata": [
@@ -57,11 +86,11 @@
 				},
 				{
 					"sandi": "P01",
-					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan dalam rangka pembiayaan bersama (Sindikasi)"
+					"keterangan": "Kredit/pembiayaan dalam rangka pembiayaan bersama (Sindikasi)"
 				},
 				{
 					"sandi": "P02",
-					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan kepada pihak ketiga melalui lembaga lain secara channeling"
+					"keterangan": "Kredit/pembiayaan kepada pihak ketiga melalui lembaga lain secara channeling"
 				},
 				{
 					"sandi": "P03",
@@ -69,31 +98,31 @@
 				},
 				{
 					"sandi": "P04",
-					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan kepada Non-UMKM melalui lembaga lain secara executing"
+					"keterangan": "Kredit/pembiayaan kepada Non-UMKM melalui lembaga lain secara executing"
 				},
 				{
 					"sandi": "P05",
-					"keterangan": "&nbsp;&nbsp; Kartu Kredit/Kartu Pembiayaan Syariah"
+					"keterangan": "Kartu Kredit/Kartu Pembiayaan Syariah"
 				},
 				{
 					"sandi": "P06",
-					"keterangan": "&nbsp;&nbsp; Surat berharga dengan Note Purchase Agreement (NPA)"
+					"keterangan": "Surat berharga dengan Note Purchase Agreement (NPA)"
 				},
 				{
 					"sandi": "P07",
-					"keterangan": "&nbsp;&nbsp; Dalam Rangka Kepemilikan Emas"
+					"keterangan": "Dalam Rangka Kepemilikan Emas"
 				},
 				{
 					"sandi": "P08",
-					"keterangan": "&nbsp;&nbsp; Gadai"
+					"keterangan": "Gadai"
 				},
 				{
 					"sandi": "P09",
-					"keterangan": "&nbsp;&nbsp; Talangan Haji"
+					"keterangan": "Talangan Haji"
 				},
 				{
 					"sandi": "P99",
-					"keterangan": "&nbsp;&nbsp; Lainnya"
+					"keterangan": "Lainnya"
 				},
 				{
 					"sandi": "",
@@ -101,17 +130,189 @@
 				},
 				{
 					"sandi": "N01",
-					"keterangan": "&nbsp;&nbsp; Giro bersaldo debet"
+					"keterangan": "Giro bersaldo debet"
 				},
 				{
 					"sandi": "N02",
-					"keterangan": "&nbsp;&nbsp; Tagihan atas transaksi perdagangan"
+					"keterangan": "Tagihan atas transaksi perdagangan"
 				},
 				{
 					"sandi": "N99",
-					"keterangan": "&nbsp;&nbsp; Lainnya"
+					"keterangan": "Lainnya"
 				}
 			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenispenggunaan",
+			"label": "Jenis Penggunaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Modal Kerja"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Investasi"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Konsumsi"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "orientasipenggunaan",
+			"label": "Orientasi Penggunaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Ekspor"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Impor"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "metodepengukuran",
+			"label": "Metode Pengukuran",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Model Biaya"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Model Revaluasi"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "kualitas",
+			"label": "Kualitas",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Lancar"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Dalam Perhatian Khusus"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Kurang Lancar"
+				},
+				{
+					"sandi": "4",
+					"keterangan": "Diragukan"
+				},
+				{
+					"sandi": "5",
+					"keterangan": "Macet"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "kreditprogrampemerintah",
+			"label": "Kredit Program Pemerintah",
+			"metadata": [
+				{
+					"sandi": "10",
+					"keterangan": "Kredit yang bukan merupakan kredit/pembiayaan dalam rangka program pemerintah"
+				},
+				{
+					"sandi": "20",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat"
+				},
+				{
+					"sandi": "21",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - Mikro"
+				},
+				{
+					"sandi": "22",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - Kecil"
+				},
+				{
+					"sandi": "23",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - Penempatan TKI"
+				},
+				{
+					"sandi": "24",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - KUR Khusus"
+				},
+				{
+					"sandi": "30",
+					"keterangan": "Kredit Program Pemerintah - Kredit Pemilikan Rumah Bersubsidi"
+				},
+				{
+					"sandi": "90",
+					"keterangan": "Kredit Program Pemerintah - Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenissukubunga",
+			"label": "Jenis Suku Bunga",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Fixed"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Floating"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Margin"
+				},
+				{
+					"sandi": "4",
+					"keterangan": "Bagi Hasil"
+				},
+				{
+					"sandi": "5",
+					"keterangan": "Ujroh"
+				},
+				{
+					"sandi": "9",
+					"keterangan": "Lainnya"
+				},
+				{
+					"sandi": "0",
+					"keterangan": "Tidak Ada"
+				}
+			]
+		},
+		{
+			"columnType": "number",
+			"columnName": "nominal",
+			"label": "Nominal",
+			"metadata": ""
+		},
+		{
+			"columnType": "number",
+			"columnName": "kredit",
+			"label": "Kredit",
+			"metadata": ""
+		},
+		{
+			"columnType": "number",
+			"columnName": "kelonggarantarik",
+			"label": "Kelonggaran Tarik",
+			"metadata": ""
 		},
 		{
 			"columnType": "string",

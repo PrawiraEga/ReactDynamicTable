@@ -17,6 +17,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { Box, Container, Grid } from '@mui/system';
 import { LookupContext } from '../context/LookupContext';
 import dataColumns from '../KRP_01.json';
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import AlertDialog from './AlertDialog';
 
 const darkTheme = createTheme({
     palette: {
@@ -72,6 +75,10 @@ export default function DevTable() {
     const [queryRes, setQueryRes] = React.useState('');
     const [resLine, setResLine] = React.useState(2);
     //let lookupVal = '3';
+    let navigate = useNavigate();
+
+    const tempQue = "SELECT IDPELAPOR, PERIODELAPORAN, PLAFON, PERIODEDATA FROM `mart.antasena`.`krp01`" + "\n" +
+    "WHERE PERIODELAPORAN = 'M' AND PLAFON = 20000000 AND PERIODEDATA = '2022-11-30' LIMIT 5"
 
     const handleCheckboxChange = (row, idx) => {
         if (selectedRows.includes(row)) {
@@ -112,7 +119,11 @@ export default function DevTable() {
     const handleFilterCheck = (row, idx) => {
         const tempTable = [...tableContent];
         if (tableContent[idx].filterCheck === true) {
-            tableContent[idx].filterCheck  = false
+            tableContent[idx].filterCheck = false
+            if (tableContent[idx].colType === 'number') {
+                tableContent[idx].strSandi = '';
+                tableContent[idx].filterVal = '';
+            }
         } else {
             tableContent[idx].filterCheck  = true
         }
@@ -137,9 +148,9 @@ export default function DevTable() {
         if (e !== null) {
             if (tempTable[idx].colType === 'number') {
                 tempTable[idx].isCheck = true;
-                tempTable[idx].filterCheck = false;
+                tempTable[idx].filterCheck = true;
                 tempTable[idx].strSandi = e.target.value;
-                //tempTable[idx].filterVal = "=";
+                tempTable[idx].filterVal = "=";
                 console.log("Temp Table: ", tempTable);
                 setTableContent(tempTable);
                 fillSelectedRows();
@@ -147,7 +158,7 @@ export default function DevTable() {
                 tempTable[idx].isCheck = true;
                 tempTable[idx].filterCheck = true;
                 tempTable[idx].strSandi = e.target.value;
-                tempTable[idx].filterVal = "=";
+                tempTable[idx].filterVal = "IN";
                 console.log("Temp Table: ", tempTable);
                 setTableContent(tempTable);
                 fillSelectedRows();
@@ -224,20 +235,20 @@ export default function DevTable() {
     }
 
     const generateQuery = (obj) => {
-        let arrField = null;
-        let whereQue = null;
-        let agrQue = null;
+        let arrField = '';
+        let whereQue = '';
+        let agrQue = '';
         if (obj.length !== 0) {    
             obj.map((row) => {
-                if (arrField !== null) {
-                    if (row.colType === 'number' && row.filterCheck === false) { // Set Agr
-                        agrQue = 'SUM(' + row.colName + ')';
+                if (arrField !== '') {
+                    if (row.colType === 'number' && row.filterCheck === false && row.filterVal === '') { 
+                        agrQue = 'SUM(' + row.colName + ')'; // Set Agr
                         arrField = arrField + ", " + agrQue;
                     } else {
                         arrField = arrField + ', ' + row.colName;
                     }
                 } else {
-                    if (row.colType === 'number' && row.filterCheck === false) {
+                    if (row.colType === 'number' && row.filterCheck === false && row.filterVal === '') {
                         agrQue = 'SUM(' + row.colName + ')';
                         arrField = agrQue;
                     } else {
@@ -245,16 +256,22 @@ export default function DevTable() {
                     }
                 }
                 if (row.filterCheck == true && row.filterVal !== '') { // Set Where
-                    if (whereQue !== null) {
+                    if (whereQue !== '') {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
                             whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
-                        } else {
+                        } else if (row.colType === 'number') {
+                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
+                        }
+                        else {
                             whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + "'" + row.strSandi + "'";
                         }
                     } else {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
                             whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
-                        } else {
+                        } else if (row.colType === 'number') {
+                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
+                        }
+                        else {
                             whereQue = 'WHERE ' + row.colName + ' ' + row.filterVal + ' ' + "'" + row.strSandi + "'";
                         }
                     }
@@ -263,10 +280,56 @@ export default function DevTable() {
                 }
             });
         }
-        let resQuery = 'SELECT ' + arrField + ' FROM LBULB11_ORI' + '\n' + whereQue;
+        let resQuery = 'SELECT ' + 'PERIODELAPORAN, ' + arrField + ' FROM `mart.antasena`.`krp01` ' + '\n' + whereQue + " AND PERIODEDATA = '2022-11-30'" + " AND PERIODELAPORAN = 'M' " + '\n' + 'LIMIT 10';
         setMaxRowResult(resQuery);
         setQueryRes(resQuery);
         console.log("Result Query: ", resQuery);
+    }
+
+    const handleGenerate = (e) => {
+        e.preventDefault();
+        getQuery();
+    }
+
+    async function processQuery(){
+        const query = queryRes;
+        let que = "mart_test";
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(que)
+        };
+        let result;
+        
+      /*  const response = await fetch('http:localhost:8080/sendQuery', query)
+        const data = await response.json();
+        result = await data.result;*/
+        const response = await fetch('http://localhost:8080/map/sendQuery', requestOptions)
+        result = await response.json();
+        //await setQueryRes(JSON.stringify(result));
+        //console.log( "QUERY RESULT : ", JSON.stringify(result));
+    }
+
+    async function getQuery() {
+        let result;
+        let query = "mart_test";
+        const que = {
+            value: tempQue
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(que)
+        };
+        const response = await axios.post("http://localhost:8080/sendQuery", que)
+        result = await response.data;
+        await setQueryRes(JSON.stringify(result));
+        console.log( "QUERY RESULT : ", JSON.stringify(result));
+        //navigate("http://localhost:8080/sendQuery");
     }
 
     React.useEffect(() => {
@@ -279,20 +342,20 @@ export default function DevTable() {
     return (
         /*<ThemeProvider theme={darkTheme}>*/
         <Box sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer sx={{ maxHeight: 440, m: 0.5 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left" padding="checkbox" width='5%'>
                                 <Checkbox
                                     color="primary"
-                                    indeterminate={selectedRows.length > 0 && selectedRows.length < columns.length}
-                                    checked={selectedRows.length === columns.length}
+                                    indeterminate={selectedRows.length > 0 && selectedRows.length < tableContent.length}
+                                    checked={selectedRows.length === tableContent.length}
                                     onChange={() => {
                                         if (selectedRows.length === 0) {
                                             setSelectedRows([]);
                                         } else {
-                                            setSelectedRows(columns.map((row) => columns.id));
+                                            setSelectedRows(tableContent.map((row) => columns.id));
                                         }
                                     }}
                                 /> &nbsp; &nbsp;
@@ -401,17 +464,20 @@ export default function DevTable() {
                 //sx={{ left: 'tooltip' }}
             >
                 <TextField
-                id="filled-multiline-static"
-                label="Multiline"
-                multiline
-                rows={resLine}
-                defaultValue="Default Value"
+                    id="filled-multiline-static"
+                    label="Multiline"
+                    multiline
+                    rows={resLine}
+                    defaultValue="Default Value"
                     variant="filled"
                     fullWidth="true"
+                    value={queryRes}
                 />&nbsp;
-                <Button variant="contained"
-                    onClick={() => generateQuery(selectedRows)}
-                >Generate</Button>
+                <AlertDialog result={queryRes}
+                />
+                {/*<Button variant="contained"
+                    onClick={handleGenerate}
+                >Process</Button>*/}
             </Container>    
         </Box>
         /*</ThemeProvider>*/
