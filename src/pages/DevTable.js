@@ -143,6 +143,12 @@ export default function DevTable() {
         console.log("lookupVal: ", JSON.stringify(lookupVal) );
     }*/
 
+    const handleSum = async (e) => {
+        let sum;
+        sum = await e.target.value;
+        setQueryRes(sum);
+    }
+
     const handleSandi = (e, idx) => {
         const tempTable = [...tableContent];
         if (e !== null) {
@@ -267,9 +273,9 @@ export default function DevTable() {
                         }
                     } else {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
-                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
+                            whereQue = 'WHERE ' + row.colName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
                         } else if (row.colType === 'number') {
-                            whereQue = whereQue + ' AND\n' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
+                            whereQue = 'WHERE ' + row.colName + ' ' + row.filterVal + ' ' + row.strSandi;
                         }
                         else {
                             whereQue = 'WHERE ' + row.colName + ' ' + row.filterVal + ' ' + "'" + row.strSandi + "'";
@@ -431,7 +437,7 @@ export default function DevTable() {
                                         </FormControl>
                                             :
                                         /*<LookupContext.Provider value={lookupVal}>*/
-                                        <FormControl width="20%" display="flex" flex-direction="row">
+                                        <FormControl width="20%" display="table-row" flex-direction="row">
                                         <TextField
                                                     id="filled-search"
                                                     variant="filled"
@@ -472,6 +478,7 @@ export default function DevTable() {
                     variant="filled"
                     fullWidth="true"
                     value={queryRes}
+                    onChange={(e) => handleSum(e)}
                 />&nbsp;
                 <AlertDialog result={queryRes}
                 />

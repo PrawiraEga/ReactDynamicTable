@@ -8,7 +8,7 @@
 		},
 		{
 			"columnType": "string",
-			"columnName": "jenissifatkreditpembiayaan",
+			"columnName": "sifatkreditpembiayaan",
 			"label": "Sifat Kredit Pembiayaan",
 			"metadata": [
 				{
