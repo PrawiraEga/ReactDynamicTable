@@ -5,6 +5,7 @@
     "\\src\\components",
     "\\src\\context",
     "\\src\\pages",
+    "\\src\\services",
     "\\src\\styles",
     "\\src\\styles\\CustomAppBarStyle.css"
   ],
