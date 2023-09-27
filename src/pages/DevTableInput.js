@@ -1,6 +1,7 @@
 //"use client"
 
 import * as React from 'react';
+import { Container } from "@mui/system";
 import Paper from '@mui/material/Paper';
 import Box from "@mui/material/Box";
 import Table from '@mui/material/Table';
@@ -46,9 +47,9 @@ function arrJP(id, label, ket, isCheck, txt) {
     return { id, label, ket, isCheck, txt };
 }
 
-function columnArr(columnType, columnName, metadata) {
-    let colName = columnName.toUppercase();
-    return { columnType, colName, metadata };
+function columnArr(columnType, colName, metadata) {
+    let columnName = colName.toUpperCase();
+    return { columnType, columnName, metadata };
 }
 
 const availMeta = metadataJson.columns;
@@ -175,22 +176,46 @@ export default function DevTableInput(props) {
         }
     }
 
-    function addColumnMeta() {
+    React.useEffect(() => {
         let columnObj = [];
-        let columnData = null;
         if (columnData.length > 0) {
             for (var i = 0; i < columnData.length; i++) {
-                //availMeta.map((row) => {
-                if (availMeta.includes(columnData[i].columnName)) {
-                    let index = availMeta.findIndex(el => el === columnData[i].columnName);
-                    columnData = columnArr(columnData[i].columnType, columnData[i].columnName, availMeta[index].metadata)
-                } else {
-                    columnData = columnArr(columnData[i].columnType, columnData[i].columnName, "")
+                let dataColumn = null;
+                for (var j = 0; j < availMeta.length; j++) {
+                    if (columnData[i].columnName === availMeta[j].columnName) {
+                        dataColumn = columnArr(columnData[i].columnType, columnData[i].columnName, availMeta[j].metadata);
+                        continue;
+                    } else if ((j === availMeta.length - 1) && (dataColumn === null)) {
+                        dataColumn = columnArr(columnData[i].columnType, columnData[i].columnName, "");
+                    }
                 }
-                columnObj.push(columnData);
-                //})
+
+                columnObj.push(dataColumn);
             }
             setDrows(columnObj);
+            console.log("Col Obj : ", columnObj);
+        }
+    }, [columnData]);
+
+    function addColumnMeta() {
+        
+        let columnObj = [];
+        if (columnData.length > 0) {
+            for (var i = 0; i < columnData.length; i++) {
+                let dataColumn = null;
+                for (var j = 0; j < availMeta.length; j++) {
+                    if (columnData[i].columnName === availMeta[j].columnName) {
+                        dataColumn = columnArr(columnData[i].columnType, columnData[i].columnName, availMeta[j].metadata);
+                        continue;
+                    } else if ((j === availMeta.length - 1) && (dataColumn === null)) {
+                        dataColumn = columnArr(columnData[i].columnType, columnData[i].columnName, "");
+                    }
+                }
+
+                columnObj.push(dataColumn);
+            }
+            setDrows(columnObj);
+            console.log("Col Obj : ", columnObj);
         }
     }
 
@@ -207,20 +232,21 @@ export default function DevTableInput(props) {
         });
     };
 
-    const handleChangeTableName = (value) => {
+    const handleChangeTableName =  async (value) => {
         let res;
         if (value) {
-            setTableName(value)
-            getColumn({ db: dbTableName.dbName, table: value })
+            setTableName(value);
+            await getColumn({ db: dbTableName.dbName, table: value })
                 .then((obj) => {
                     res = obj.columns;
+                    console.log("Columns ", JSON.stringify(res));
                     setColumnData(res);
-                    addColumnMeta();
-                    console.log("Columns ", JSON.stringify(res))
+                    
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+            //addColumnMeta();
         }
     }
 
@@ -254,7 +280,7 @@ export default function DevTableInput(props) {
     }, []);
 
     return (
-        
+        <Container>
         <Paper sx={{ width: '125%', overflow: 'hidden' }}>
             <Box
                 component="form"
@@ -301,7 +327,7 @@ export default function DevTableInput(props) {
                         <TableBody>
                             {(columnData !== null)
                             ?
-                            drows.map((row, index) => (
+                                drows.map((row, index) => (
                                     <TableRow
                                         key={row.id}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -316,10 +342,10 @@ export default function DevTableInput(props) {
                                             />
                                         </TableCell>
                                         <TableCell component="th" scope="row">
-                                            {row.id}
+                                            {row.columnType}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
-                                            {row.name}
+                                            {row.columnName}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
                                             <FormControl width="100%">
@@ -395,6 +421,7 @@ export default function DevTableInput(props) {
             >OK</Button>
             <br></br>
             </Box>
-        </Paper>
+            </Paper>
+        </Container>
     );
 }

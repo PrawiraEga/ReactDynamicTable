@@ -30,11 +30,12 @@ const CustomAppBar = () => {
                             <Link to="/tablereport">Report</Link>
                         </li>
                         <li>
-                            <Link to="/tablesandi">Sandi</Link>
-                        </li>
-                        <li>
                             <Link to="/tableinput">Input</Link>
                         </li>
+                        <li>
+                            <Link to="/tablesandi">Sandi</Link>
+                        </li>
+                        
                     </ul>
                 </nav>
             </Toolbar>

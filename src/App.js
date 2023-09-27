@@ -10,6 +10,7 @@ import About from './pages/About';
 import DevTable from './pages/DevTable';
 import DevTableSandi from './pages/DevTableSandi';
 import DevTableInput from './pages/DevTableInput';
+import GenerateReport from './pages/GenerateReport';
 
 const darkTheme = createTheme({
     palette: {
@@ -26,9 +27,10 @@ function App() {
                 <Routes>
                     <Route path="/" exact element={<Home />} />
                     <Route path="/about" exact element={<About />} />
-                    <Route path="/tablereport" exact element={<DevTable/>} />
-                    <Route path="/tablesandi" exact element={<DevTableSandi />} />
+                    <Route path="/tablereport" exact element={<GenerateReport />} />
                     <Route path="/tableinput" exact element={<DevTableInput />} />
+                    <Route path="/tablesandi" exact element={<DevTableSandi />} />
+                    
                 </Routes>
             </div>
       {/*<div className="App">

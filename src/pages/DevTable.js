@@ -69,9 +69,9 @@ const columns = [
 
 export default function DevTable() {
 
+    const [sandiTxtProp, setSandiTxtProp] = React.useState('');
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [tableContent, setTableContent] = React.useState(datColumns);
-    const [sandiTxtProp, setSandiTxtProp] = React.useState('');
     const [queryRes, setQueryRes] = React.useState('');
     const [resLine, setResLine] = React.useState(2);
     //let lookupVal = '3';
@@ -198,7 +198,7 @@ export default function DevTable() {
         }
     };
 
-    const onSandiVal = (events, callback = () => {}) => {
+    const onSandiVal = (events) => {
         console.log("Sandi Row Tbl: ", events)
         let index = events[0];
         let sandiStr = events[1];

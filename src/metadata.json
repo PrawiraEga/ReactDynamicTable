@@ -1,0 +1,350 @@
+{
+	"columns": [
+		{
+			"columnType": "string",
+			"columnName": "sifatkreditpembiayaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Kredit/pembiayaan yang direstrukturisasi"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Pengambilalihan kredit/pembiayaan"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Kredit/pembiayaan subordinasi"
+				},
+				{
+					"sandi": "4",
+					"keterangan": "Pemindahan utang nasabah"
+				},
+				{
+					"sandi": "9",
+					"keterangan": "Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jeniskreditpembiayaan",
+			"metadata": [
+				{
+					"sandi": "",
+					"keterangan": "Dengan perjanjian kredit/pembiayaan"
+				},
+				{
+					"sandi": "P01",
+					"keterangan": "Kredit/pembiayaan dalam rangka pembiayaan bersama (Sindikasi)"
+				},
+				{
+					"sandi": "P02",
+					"keterangan": "Kredit/pembiayaan kepada pihak ketiga melalui lembaga lain secara channeling"
+				},
+				{
+					"sandi": "P03",
+					"keterangan": "&nbsp;&nbsp; Kredit/pembiayaan kepada UMKM melalui lembaga lain secara executing"
+				},
+				{
+					"sandi": "P04",
+					"keterangan": "Kredit/pembiayaan kepada Non-UMKM melalui lembaga lain secara executing"
+				},
+				{
+					"sandi": "P05",
+					"keterangan": "Kartu Kredit/Kartu Pembiayaan Syariah"
+				},
+				{
+					"sandi": "P06",
+					"keterangan": "Surat berharga dengan Note Purchase Agreement (NPA)"
+				},
+				{
+					"sandi": "P07",
+					"keterangan": "Dalam Rangka Kepemilikan Emas"
+				},
+				{
+					"sandi": "P08",
+					"keterangan": "Gadai"
+				},
+				{
+					"sandi": "P09",
+					"keterangan": "Talangan Haji"
+				},
+				{
+					"sandi": "P99",
+					"keterangan": "Lainnya"
+				},
+				{
+					"sandi": "",
+					"keterangan": "Tanpa perjanjian kredit"
+				},
+				{
+					"sandi": "N01",
+					"keterangan": "Giro bersaldo debet"
+				},
+				{
+					"sandi": "N02",
+					"keterangan": "Tagihan atas transaksi perdagangan"
+				},
+				{
+					"sandi": "N99",
+					"keterangan": "Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenispenggunaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Modal Kerja"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Investasi"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Konsumsi"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "kategoriusahadebitur",
+			"metadata": [
+				{
+					"sandi": "UM",
+					"keterangan": "Debitur Usaha Mikro, Kecil, dan Menengah – Mikro"
+				},
+				{
+					"sandi": "UK",
+					"keterangan": "Debitur Usaha Mikro, Kecil, dan Menengah -Kecil"
+				},
+				{
+					"sandi": "UT",
+					"keterangan": "Debitur Usaha Mikro, Kecil, dan Menengah - Menengah"
+				},
+				{
+					"sandi": "NU",
+					"keterangan": "Bukan Debitur Usaha Mikro, Kecil, dan Menengah"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenispenggunaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Modal Kerja"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Investasi"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Konsumsi"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "orientasipenggunaan",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Ekspor"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Impor"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "metodepengukuran",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Model Biaya"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Model Revaluasi"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "kualitas",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Lancar"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Dalam Perhatian Khusus"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Kurang Lancar"
+				},
+				{
+					"sandi": "4",
+					"keterangan": "Diragukan"
+				},
+				{
+					"sandi": "5",
+					"keterangan": "Macet"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "kreditprogrampemerintah",
+			"metadata": [
+				{
+					"sandi": "10",
+					"keterangan": "Kredit yang bukan merupakan kredit/pembiayaan dalam rangka program pemerintah"
+				},
+				{
+					"sandi": "20",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat"
+				},
+				{
+					"sandi": "21",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - Mikro"
+				},
+				{
+					"sandi": "22",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - Kecil"
+				},
+				{
+					"sandi": "23",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - Penempatan TKI"
+				},
+				{
+					"sandi": "24",
+					"keterangan": "Kredit Program Pemerintah - Kredit Usaha Rakyat - KUR Khusus"
+				},
+				{
+					"sandi": "30",
+					"keterangan": "Kredit Program Pemerintah - Kredit Pemilikan Rumah Bersubsidi"
+				},
+				{
+					"sandi": "90",
+					"keterangan": "Kredit Program Pemerintah - Lainnya"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenissukubunga",
+			"metadata": [
+				{
+					"sandi": "1",
+					"keterangan": "Fixed"
+				},
+				{
+					"sandi": "2",
+					"keterangan": "Floating"
+				},
+				{
+					"sandi": "3",
+					"keterangan": "Margin"
+				},
+				{
+					"sandi": "4",
+					"keterangan": "Bagi Hasil"
+				},
+				{
+					"sandi": "5",
+					"keterangan": "Ujroh"
+				},
+				{
+					"sandi": "9",
+					"keterangan": "Lainnya"
+				},
+				{
+					"sandi": "0",
+					"keterangan": "Tidak Ada"
+				}
+			]
+		},
+		{
+			"columnType": "string",
+			"columnName": "jenisvaluta",
+			"metadata": [
+				{
+					"sandi": "V99",
+					"keterangan": "Valuta Asing"
+				},
+				{
+					"sandi": "AFN",
+					"keterangan": "Afghanistan Afghani"
+				},
+				{
+					"sandi": "ALL",
+					"keterangan": "Albanian Lek"
+				},
+				{
+					"sandi": "DZD",
+					"keterangan": "Algerian Dinar"
+				},
+				{
+					"sandi": "USD",
+					"keterangan": "US Dollar"
+				},
+				{
+					"sandi": "AOA",
+					"keterangan": "Angolan Kwanza"
+				},
+				{
+					"sandi": "XCD",
+					"keterangan": "East Caribbean Dollar"
+				},
+				{
+					"sandi": "ARS",
+					"keterangan": "Argentine Peso"
+				},
+				{
+					"sandi": "AMD",
+					"keterangan": "Armenia Dram"
+				},
+				{
+					"sandi": "AWG",
+					"keterangan": "Aruban Florin"
+				},
+				{
+					"sandi": "AUD",
+					"keterangan": "Australian Dollar"
+				},
+				{
+					"sandi": "BHD",
+					"keterangan": "Bahraini Dinar"
+				},
+				{
+					"sandi": "BDT",
+					"keterangan": "Bangladesh Taka"
+				},
+				{
+					"sandi": "BBD",
+					"keterangan": "Barbados Dollar"
+				},
+				{
+					"sandi": "BZD",
+					"keterangan": "Belize Dollar"
+				}
+			]
+		}
+	]
+}
