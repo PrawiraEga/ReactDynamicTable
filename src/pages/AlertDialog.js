@@ -8,15 +8,23 @@ import DialogTitle from '@mui/material/DialogTitle';
 import LinearProgress from '@mui/material/LinearProgress';
 import axios from "axios";
 import JSONViewer from 'react-json-viewer';
+import dataResult from '../smplResult.json';
+import ResTable from './ResTable';
+
+const result = dataResult.data;
 
 export default function AlertDialog(props) {
     const [open, setOpen] = React.useState(false);
-    const [queryRes, setQueryRes] = React.useState(null);
-    let result = props.result;
+    const [queryRes, setQueryRes] = React.useState([]);
+
+    const [resData, setResData] = React.useState([]);
+    const [columnArr, setColumnArr] = React.useState([]);
+
+    //var result = props.result;
 
     const handleClickOpen = () => {
         setOpen(true);
-        getQuery();
+        //getQuery();
     };
 
     const handleClose = () => {
@@ -29,12 +37,29 @@ export default function AlertDialog(props) {
             value: result
         }
         
-        const response = await axios.post("http://localhost:8080/sendQuery", que)
+        const response = await axios.post("http://localhost:8080/reqQuery", que)
         res = await response.data;
         await setQueryRes(JSON.parse(JSON.stringify(res)));
         console.log("QUERY RESULT : ", JSON.stringify(response));
-        //navigate("http://localhost:8080/sendQuery");
+        //navigate("http://localhost:8080/reqQuery");
     }
+
+    function mapValueOnly() {
+        let arrValueOnly
+    }
+
+    React.useEffect(() => {
+        async function fillColumnArr() {
+            let arrColumn = [];
+            let data = result[0];
+            arrColumn = Object.keys(data);
+            await setColumnArr(arrColumn);
+            await setResData(result);
+        }
+
+        fillColumnArr()
+        
+    }, []);
 
     return (
         <div>
@@ -52,13 +77,23 @@ export default function AlertDialog(props) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {(queryRes !== null)
-                            ?
-                            <JSONViewer
-                                json={queryRes}
-                            />
-                            : <LinearProgress />
+                        {
+                                <ResTable
+                                    dataResult={resData}
+                                    columnTable={columnArr}
+                                />
                         }
+                        {/*{
+                            (resData.length > 0)
+                                (queryRes !== null)
+                                ?
+                                
+                                <JSONViewer
+                                    json={queryRes}
+                                />
+                                :
+                                <LinearProgress />
+                        }*/}
 
                     </DialogContentText>
                 </DialogContent>

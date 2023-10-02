@@ -15,6 +15,7 @@ export default function SelectComponent({
 
     return (
         <Autocomplete
+            ListboxProps={{ style: { maxHeight: 300, overflow: 'auto' } }}
             disabled={disabled}
             fullWidth={fullWidth}
             disablePortal
@@ -23,8 +24,8 @@ export default function SelectComponent({
             value={objectVariable}
             onChange={(event, value) => setVariable(value)}
             options={dataOptions}
-            sx={{ width: 500 }}
-            renderInput={(params) => <TextField {...params} label={labelString} error={error} helperText={error ? `${labelString} is required` : null} />}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label={labelString} error={error} helperText={error ? `${labelString} is required` : null} margin="normal" />}
         />
     );
 }

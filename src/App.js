@@ -27,7 +27,7 @@ function App() {
                 <Routes>
                     <Route path="/" exact element={<Home />} />
                     <Route path="/about" exact element={<About />} />
-                    <Route path="/tablereport" exact element={<GenerateReport />} />
+                    <Route path="/tablereport" exact element={<DevTable />} />
                     <Route path="/tableinput" exact element={<DevTableInput />} />
                     <Route path="/tablesandi" exact element={<DevTableSandi />} />
                     

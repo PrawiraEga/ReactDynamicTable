@@ -480,7 +480,8 @@ export default function DevTable() {
                     value={queryRes}
                     onChange={(e) => handleSum(e)}
                 />&nbsp;
-                <AlertDialog result={queryRes}
+                <AlertDialog
+                    //result={queryRes}
                 />
                 {/*<Button variant="contained"
                     onClick={handleGenerate}
