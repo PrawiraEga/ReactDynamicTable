@@ -11,7 +11,7 @@ import JSONViewer from 'react-json-viewer';
 import dataResult from '../smplResult.json';
 import ResTable from './ResTable';
 
-const result = dataResult.data;
+//const result = dataResult.data;
 
 export default function AlertDialog(props) {
     const [open, setOpen] = React.useState(false);
@@ -20,11 +20,11 @@ export default function AlertDialog(props) {
     const [resData, setResData] = React.useState([]);
     const [columnArr, setColumnArr] = React.useState([]);
 
-    //var result = props.result;
+    var result = props.result;
 
     const handleClickOpen = () => {
         setOpen(true);
-        //getQuery();
+        getQuery();
     };
 
     const handleClose = () => {
@@ -44,10 +44,6 @@ export default function AlertDialog(props) {
         //navigate("http://localhost:8080/reqQuery");
     }
 
-    function mapValueOnly() {
-        let arrValueOnly
-    }
-
     React.useEffect(() => {
         async function fillColumnArr() {
             let arrColumn = [];
@@ -57,7 +53,7 @@ export default function AlertDialog(props) {
             await setResData(result);
         }
 
-        fillColumnArr()
+        if(result !== '') fillColumnArr()
         
     }, []);
 
@@ -69,6 +65,7 @@ export default function AlertDialog(props) {
             <Dialog
                 open={open}
                 onClose={handleClose}
+                maxWidth="lg"
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -78,10 +75,14 @@ export default function AlertDialog(props) {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         {
-                                <ResTable
-                                    dataResult={resData}
-                                    columnTable={columnArr}
-                                />
+                            (queryRes.length > 0)
+                            ?
+                            <ResTable
+                                dataResult={queryRes}
+                                columnTable={columnArr}
+                            />
+                            :
+                            <LinearProgress />
                         }
                         {/*{
                             (resData.length > 0)
@@ -99,7 +100,6 @@ export default function AlertDialog(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>CLOSE</Button>
-               
                 </DialogActions>
             </Dialog>
         </div>

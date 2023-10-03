@@ -1,0 +1,64 @@
+{
+  "data": [
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 20000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "1",
+      "plafon": 35000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 10000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 20000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 20000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 50000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 25000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 10000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 20000000
+    },
+    {
+      "idpelapor": "002035000",
+      "periodelaporan": "M",
+      "sifatkreditpembiayaan": "9",
+      "plafon": 50000000
+    }
+  ]
+}

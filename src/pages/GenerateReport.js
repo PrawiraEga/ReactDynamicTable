@@ -217,14 +217,22 @@ export default function GenerateReport() {
         if (obj.length !== 0) {
             obj.map((row) => {
                 if (arrField !== '') {
-                    if (row.colType === 'number' && row.filterCheck === false && row.filterVal === '') {
+                    if (row.columnType === 'number'
+                        && row.columnType === 'bigint'
+                        && row.columnType === 'float'
+                        && row.filterCheck === false
+                        && row.filterVal === '') {
                         agrQue = 'SUM(' + row.columnName + ')'; // Set Agr
                         arrField = arrField + ", " + agrQue;
                     } else {
                         arrField = arrField + ', ' + row.columnName;
                     }
                 } else {
-                    if (row.colType === 'number' && row.filterCheck === false && row.filterVal === '') {
+                    if (row.columnType === 'number'
+                        && row.columnType === 'bigint'
+                        && row.columnType === 'float'
+                        && row.filterCheck === false
+                        && row.filterVal === '') {
                         agrQue = 'SUM(' + row.columnName + ')';
                         arrField = agrQue;
                     } else {
@@ -464,17 +472,17 @@ export default function GenerateReport() {
                                 </TableContainer>
                             </Paper>
                             <TextField
-                        margin="normal"
-                        id="filled-multiline-static"
-                        label="Multiline"
-                        multiline
-                        rows={resLine}
-                        defaultValue="Default Value"
-                        variant="filled"
-                        fullWidth="true"
-                        value={queryRes}
-                        onChange={(e) => handleSum(e)}
-                        />&nbsp;
+                                margin="normal"
+                                id="filled-multiline-static"
+                                label="Multiline"
+                                multiline
+                                rows={resLine}
+                                defaultValue="Default Value"
+                                variant="filled"
+                                fullWidth="true"
+                                value={queryRes}
+                                onChange={(e) => handleSum(e)}
+                            />&nbsp;
                         <AlertDialog result={queryRes}
                         />
                         </Grid>      
