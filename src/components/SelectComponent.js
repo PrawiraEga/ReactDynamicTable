@@ -25,7 +25,7 @@ export default function SelectComponent({
             onChange={(event, value) => setVariable(value)}
             options={dataOptions}
             sx={{ width: 200 }}
-            renderInput={(params) => <TextField {...params} label={labelString} error={error} helperText={error ? `${labelString} is required` : null} margin="normal" />}
+            renderInput={(params) => <TextField {...params} label={labelString} error={error} margin="normal" />}
         />
     );
 }

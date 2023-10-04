@@ -145,7 +145,7 @@ export default function DevTableSandi(props) {
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left" padding="checkbox" width='15%'>
+                            <TableCell align="left" padding="checkbox" width='5%'>
                                 <FormControlLabel
                                     value="end"
                                     control={<Checkbox
@@ -158,7 +158,7 @@ export default function DevTableSandi(props) {
                             </TableCell>
                             <TableCell align="left" width='15%'>&nbsp; SANDI &nbsp;</TableCell>
                             {/*<TableCell align="left" width='15%'>&nbsp; LABEL &nbsp;</TableCell>*/}
-                            <TableCell align="left" width='50%'>&nbsp; KETERANGAN &nbsp;</TableCell>
+                            <TableCell align="left" width='70%'>&nbsp; KETERANGAN &nbsp;</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -168,7 +168,7 @@ export default function DevTableSandi(props) {
                                     key={idx}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell padding="checkbox">
+                                    <TableCell padding="checkbox" width='5%'>
                                         <Checkbox
                                             color="primary" align="left"
                                             checked={selectedRows.includes(row.sandi)}

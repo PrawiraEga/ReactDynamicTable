@@ -11,10 +11,14 @@ import { Checkbox, Select, InputLabel, MenuItem, TextField, FormControl, Button,
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+
 import DevDialog from './DevDialog';
 import AlertDialog from './AlertDialog';
 import { getDb, getColumn } from "../services/api";
 import SelectComponent from '../components/SelectComponent';
+import AlertComponent from '../components/AlertComponent';
 import metadataJson from '../metadata.json';
 
 function columnObject(id, fieldName, columnType, isCheck, strSandi, filterCheck, filterVal, metadata) {
@@ -32,6 +36,12 @@ export default function GenerateReport() {
     const [tableName, setTableName] = React.useState("");
     const [availableDBAndTables, setAvailableDBAndTables] = React.useState([]);
     const [columnData, setColumnData] = React.useState([]);
+    const [isConnectionError, setIsConnectionError] = React.useState({
+        isError: false,
+        errorFrom: "",
+        dataValue: "",
+    });
+    const [errorStates, setErrorState] = React.useState("");
 
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [tableContent, setTableContent] = React.useState([]);
@@ -59,11 +69,30 @@ export default function GenerateReport() {
                 .then((obj) => {
                     res = obj.columns;
                     console.log("Columns ", JSON.stringify(res));
+                    //setErrorState(false);
                     setColumnData(res);
-
+                    setIsConnectionError({
+                        isError: false,
+                        errorFrom: "",
+                        dataValue: "",
+                    });
                 })
                 .catch((err) => {
+                    //setErrorState(true);
+                    setIsConnectionError({
+                        isError: true,
+                        errorFrom: "initialTable",
+                        dataValue: value,
+                    });
                     console.log(err);
+                    /*return (
+                        <Alert severity="error">
+                            <AlertTitle>Error</AlertTitle>
+                            {err}
+                        </Alert>
+                    )*/
+                    
+                    
                 });
             //addColumnMeta();
         }
@@ -275,6 +304,53 @@ export default function GenerateReport() {
         setResLine(rowMax);
     }
 
+    const retryFetch = async (from, dataValue) => {
+        window.location.reload(true)
+        switch (from) {
+            case "getDB":
+                await getDb()
+                    .then(({ db }) => {
+                        setAvailableDBAndTables(db);
+                        setIsConnectionError({
+                            isError: false,
+                            errorFrom: "",
+                            dataValue: "",
+                        });
+                    })
+                    .catch((err) => {
+                        setIsConnectionError({
+                            isError: true,
+                            errorFrom: "getDB",
+                            dataValue: dataValue,
+                        });
+                        console.log(err);
+                    });
+                break;
+            case "initialTable":
+                if (dataValue)
+                    await getColumn({ db: dbTableName.dbName, table: dataValue })
+                        .then((obj) => {
+                            setColumnData([{ subDB: "a", columns: obj.columns }]);
+                            setIsConnectionError({
+                                isError: false,
+                                errorFrom: "",
+                                dataValue: "",
+                            });
+                        })
+                        .catch((err) => {
+                            setIsConnectionError({
+                                isError: true,
+                                errorFrom: "initialTable",
+                                dataValue: dataValue,
+                            });
+                            console.log(err);
+                        });
+                break;
+            default:
+                return;
+        }
+    };
+
     const options = {
         headers: {
             'Content-Type': 'application/json',
@@ -286,9 +362,21 @@ export default function GenerateReport() {
     React.useEffect(() => {
         getDb(options)
             .then(({ db }) => {
+                //setErrorState(false);
                 setAvailableDBAndTables(db);
+                setIsConnectionError({
+                    isError: false,
+                    errorFrom: "",
+                    dataValue: "",
+                });
             })
             .catch((err) => {
+                setIsConnectionError({
+                    isError: true,
+                    errorFrom: "getDB",
+                    dataValue: "",
+                });
+                //setErrorState(true);
                 console.log(err);
             });
     }, []);
@@ -322,6 +410,24 @@ export default function GenerateReport() {
     return (
         
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            {isConnectionError.isError ? (
+                <AlertComponent
+                    retryFetch={() =>
+                        retryFetch(
+                            isConnectionError.errorFrom,
+                            isConnectionError.dataValue,
+                            isConnectionError.iValue
+                        )
+                    }
+                    setIsConnectionError={() =>
+                        setIsConnectionError({
+                            isError: false,
+                            errorFrom: "",
+                            dataValue: "",
+                        })
+                    }
+                />
+            ) : null}
             <Grid container spacing={3}>
                 <Grid item xs={12} md={8} lg={9}>
                     <Paper
@@ -332,12 +438,12 @@ export default function GenerateReport() {
                             height: 180,
                         }}
                     >
-                        {/*<Deposits />*/}
                         <SelectComponent
                             labelString="Database Name"
                             objectVariable={dbTableName.dbName}
                             setVariable={handleChangeDbName}
                             dataOptions={availableDBAndTables.map((o) => o.dbName)}
+                            
                         >
                         </SelectComponent>
                         <SelectComponent
@@ -346,6 +452,7 @@ export default function GenerateReport() {
                             setVariable={handleChangeTableName}
                             dataOptions={dbTableName.availableTables}
                             disabled={!dbTableName.dbName}
+                            
                         >
                         </SelectComponent>
                     </Paper>

@@ -23,3 +23,8 @@ export async function getColumn(item) {
         })
         .then((res) => res.data);
 }
+
+export async function sendQuery(data) {
+    return axios.post(`${hitLocal}/reqQuery`, data)
+    .then((res) => res)
+}
