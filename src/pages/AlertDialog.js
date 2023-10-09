@@ -9,6 +9,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import LinearProgress from '@mui/material/LinearProgress';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import { styled } from '@mui/material/styles';
 
 import axios from "axios";
 import JSONViewer from 'react-json-viewer';
@@ -22,11 +26,21 @@ export default function AlertDialog(props) {
     const [open, setOpen] = React.useState(false);
     const [queryRes, setQueryRes] = React.useState([]);
     const [isSuccess, setIsSuccess] = React.useState("");
+    const [sbOpen, setSbOpen] = React.useState(false);
+    const [sbErrorOpen, setSbErrorOpen] = React.useState(false);
 
     const [resData, setResData] = React.useState([]);
     const [columnArr, setColumnArr] = React.useState([]);
 
     var result = props.result;
+
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    }));
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -35,7 +49,13 @@ export default function AlertDialog(props) {
 
     const handleClose = () => {
         setOpen(false);
+        setIsSuccess("");
     };
+
+    const handleSbClose = () => {
+        setSbOpen(false);
+        setSbErrorOpen(false);
+    }
 
     async function getQuery() {
         let res;
@@ -50,13 +70,15 @@ export default function AlertDialog(props) {
                     .then(response => {
                         if (response.status === 200) {
                             res = response.data;
-                            setQueryRes(JSON.parse(JSON.stringify(res)));
+                            setResData(JSON.parse(JSON.stringify(res)));
                             setIsSuccess(true);
+                            setSbOpen(true);
                             console.log("QUERY RESULT : ", JSON.stringify(response));
                         } else throw new Error(response);
                     })
                     .catch((e) => {
                         setIsSuccess(false);
+                        setSbErrorOpen(true);
                         console.log("ERROR QUERY : ", e);
                     })
                 /*const response = await axios.post("http://localhost:8080/reqQuery", que)
@@ -81,12 +103,41 @@ export default function AlertDialog(props) {
             let data = result[0];
             arrColumn = Object.keys(data);
             await setColumnArr(arrColumn);
-            await setResData(result);
+            await setQueryRes(result);
         }
 
-        if(result !== '') fillColumnArr()
-        
-    }, []);
+        /*async function callQuery() {
+            let res;
+
+            if (result !== null) {
+                const que = {
+                    value: result
+                }
+                sendQuery(que)
+                    .then(response => {
+                        if (response.status === 200) {
+                            res = response.data;
+                            setResData(JSON.parse(JSON.stringify(res)));
+                            setIsSuccess(true);
+                            setSbOpen(true);
+                            console.log("QUERY RESULT : ", JSON.stringify(response));
+                        } else throw new Error(response);
+                    })
+                    .catch((e) => {
+                        setIsSuccess(false);
+                        setSbErrorOpen(true);
+                        console.log("ERROR QUERY : ", e);
+                    })
+            }
+        }*/
+
+        /*if (result !== '')
+            fillColumnArr()
+            callQuery()*/
+        /*if (queryRes.length > 0)
+            getQuery()*/
+
+    }, [result]);
 
     return (
         <div>
@@ -106,7 +157,7 @@ export default function AlertDialog(props) {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         
-                        { isSuccess !== "" && queryRes.length > 0 ? (
+                        {isSuccess !== "" && resData.length > 0 ? (
                             (isSuccess === true) ? (
                                 <Box margin={{
                                     top: 16,
@@ -114,22 +165,36 @@ export default function AlertDialog(props) {
                                     bottom: 0,
                                     left: 24,
                                 }}>
-                                <Alert onClose={() => setIsSuccess("")}>
-                                        Query Success
-                                </Alert>
-                                <ResTable
-                                dataResult={queryRes}
-                                columnTable={columnArr}
-                                    />
+                                    <Stack spacing={2}>
+                                        {/*<Item>*/}
+                                        <Snackbar open={sbOpen} autoHideDuration={6000} onClose={handleSbClose}>
+                                            <Alert severity="success" sx={{ width: '100%' }}>
+                                                Query Success
+                                            </Alert>
+                                        </Snackbar>
+                                        <ResTable
+                                            dataResult={resData}
+                                            columnTable={columnArr}
+                                        />
+                                        {/*</Item>*/}
+                                        {/*<Item>*/}
+                                            
+                                        {/*</Item>*/}
+                                    </Stack>
+                                    <Stack>
+                                        
+                                    </Stack>
                                 </Box>
                             )
                                 : (
-                                    <Alert severity="error" onClose={() => setIsSuccess("")}>
+                                    <Snackbar open={setSbErrorOpen} autoHideDuration={6000} onClose={handleClose}>
+                                    <Alert severity="error">
                                         <AlertTitle style={{ display: "flex" }}>Error</AlertTitle>
                                         Error! — <strong>Query submit failed, Please Check Query or Service</strong>
-                                    </Alert>
+                                        </Alert>
+                                    </Snackbar>
                                 )
-                        ) : <LinearProgress />
+                        ) : null
                         }
                             {/*(queryRes.length > 0)
                             ?

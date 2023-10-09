@@ -63,27 +63,30 @@ export default function GenerateReport() {
 
     const handleChangeTableName = async (value) => {
         let res;
+        setQueryRes('');
         if (value) {
             setTableName(value);
             await getColumn({ db: dbTableName.dbName, table: value })
                 .then((obj) => {
                     res = obj.columns;
+                    setColumnData(res);
                     console.log("Columns ", JSON.stringify(res));
                     //setErrorState(false);
-                    setColumnData(res);
-                    setIsConnectionError({
+                    
+                    /*setIsConnectionError({
                         isError: false,
                         errorFrom: "",
                         dataValue: "",
-                    });
+                    });*/
                 })
                 .catch((err) => {
                     //setErrorState(true);
-                    setIsConnectionError({
+
+                    /*setIsConnectionError({
                         isError: true,
                         errorFrom: "initialTable",
                         dataValue: value,
-                    });
+                    });*/
                     console.log(err);
                     /*return (
                         <Alert severity="error">
@@ -276,7 +279,7 @@ export default function GenerateReport() {
                             whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
                         }
                         else {
-                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + "'" + row.strSandi + "'";
+                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
                         }
                     } else {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
@@ -285,7 +288,7 @@ export default function GenerateReport() {
                             whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
                         }
                         else {
-                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + "'" + row.strSandi + "'";
+                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
                         }
                     }
                 } else {
@@ -330,7 +333,7 @@ export default function GenerateReport() {
                 if (dataValue)
                     await getColumn({ db: dbTableName.dbName, table: dataValue })
                         .then((obj) => {
-                            setColumnData([{ subDB: "a", columns: obj.columns }]);
+                            setColumnData( obj.columns );
                             setIsConnectionError({
                                 isError: false,
                                 errorFrom: "",
@@ -435,7 +438,7 @@ export default function GenerateReport() {
                             p: 2,
                             display: 'flex',
                             flexDirection: 'column',
-                            height: 180,
+                            height: 200,
                         }}
                     >
                         <SelectComponent
@@ -446,6 +449,13 @@ export default function GenerateReport() {
                             
                         >
                         </SelectComponent>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "inherit",
+                            }}
+                        >
                         <SelectComponent
                             labelString="Table Name"
                             objectVariable={tableName}
@@ -454,7 +464,8 @@ export default function GenerateReport() {
                             disabled={!dbTableName.dbName}
                             
                         >
-                        </SelectComponent>
+                            </SelectComponent>
+                        </div>
                     </Paper>
                 </Grid>
                 {
