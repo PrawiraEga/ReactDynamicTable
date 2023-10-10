@@ -131,9 +131,9 @@ export default function AlertDialog(props) {
             }
         }*/
 
-        /*if (result !== '')
+        if (result !== '')
             fillColumnArr()
-            callQuery()*/
+            //callQuery()
         /*if (queryRes.length > 0)
             getQuery()*/
 
@@ -194,7 +194,7 @@ export default function AlertDialog(props) {
                                         </Alert>
                                     </Snackbar>
                                 )
-                        ) : null
+                        ) : <LinearProgress />
                         }
                             {/*(queryRes.length > 0)
                             ?
