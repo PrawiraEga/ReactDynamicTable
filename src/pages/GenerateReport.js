@@ -21,9 +21,9 @@ import SelectComponent from '../components/SelectComponent';
 import AlertComponent from '../components/AlertComponent';
 import metadataJson from '../metadata.json';
 
-function columnObject(id, fieldName, columnType, isCheck, strSandi, filterCheck, filterVal, metadata) {
+function columnObject(id, fieldName, columnType, isCheck, strKondisi, filterCheck, filterVal, metadata) {
     let columnName = fieldName.toUpperCase();
-    return { id, columnName, columnType, isCheck, strSandi, filterCheck, filterVal, metadata };
+    return { id, columnName, columnType, isCheck, strKondisi, filterCheck, filterVal, metadata };
 }
 
 const availMeta = metadataJson.columns;
@@ -73,20 +73,20 @@ export default function GenerateReport() {
                     console.log("Columns ", JSON.stringify(res));
                     //setErrorState(false);
                     
-                    /*setIsConnectionError({
+                    setIsConnectionError({
                         isError: false,
                         errorFrom: "",
                         dataValue: "",
-                    });*/
+                    });
                 })
                 .catch((err) => {
                     //setErrorState(true);
 
-                    /*setIsConnectionError({
+                    setIsConnectionError({
                         isError: true,
                         errorFrom: "initialTable",
                         dataValue: value,
-                    });*/
+                    });
                     console.log(err);
                     /*return (
                         <Alert severity="error">
@@ -108,7 +108,7 @@ export default function GenerateReport() {
                 tableContent[idx].isCheck = false;
                 tableContent[idx].filterCheck = false;
                 tableContent[idx].filterVal = '';
-                tableContent[idx].strSandi = '';
+                tableContent[idx].strKondisi = '';
             } else {
                 tableContent[idx].isCheck = true;
             }
@@ -118,7 +118,7 @@ export default function GenerateReport() {
                 tableContent[idx].isCheck = false;
                 tableContent[idx].filterCheck = false;
                 tableContent[idx].filterVal = '';
-                tableContent[idx].strSandi = '';
+                tableContent[idx].strKondisi = '';
             } else {
                 tableContent[idx].isCheck = true
             }
@@ -130,8 +130,8 @@ export default function GenerateReport() {
         const tempTable = [...tableContent];
         if (tableContent[idx].filterCheck === true) {
             tableContent[idx].filterCheck = false
-            if (tableContent[idx].colType === 'number') {
-                tableContent[idx].strSandi = '';
+            if (tableContent[idx].columnType === 'number') {
+                tableContent[idx].strKondisi = '';
                 tableContent[idx].filterVal = '';
             }
         } else {
@@ -157,10 +157,10 @@ export default function GenerateReport() {
     const handleSandi = (e, idx) => {
         const tempTable = [...tableContent];
         if (e !== null) {
-            if (tempTable[idx].colType === 'number') {
+            if (tempTable[idx].columnType === 'number') {
                 tempTable[idx].isCheck = true;
                 tempTable[idx].filterCheck = true;
-                tempTable[idx].strSandi = e.target.value;
+                tempTable[idx].strKondisi = e.target.value;
                 tempTable[idx].filterVal = "=";
                 console.log("Temp Table: ", tempTable);
                 setTableContent(tempTable);
@@ -168,7 +168,7 @@ export default function GenerateReport() {
             } else {
                 tempTable[idx].isCheck = true;
                 tempTable[idx].filterCheck = true;
-                tempTable[idx].strSandi = e.target.value;
+                tempTable[idx].strKondisi = e.target.value;
                 tempTable[idx].filterVal = "IN";
                 console.log("Temp Table: ", tempTable);
                 setTableContent(tempTable);
@@ -187,7 +187,7 @@ export default function GenerateReport() {
             //setSandiTxtProp(e.target.value);
             //tempTable[idx].isCheck = true;
             //tempTable[idx].filterCheck = true;
-            tempTable[idx].strSandi = e.target.value;
+            tempTable[idx].strKondisi = e.target.value;
             //tempTable[idx].filterVal = "IN";
             console.log("Temp Table: ", tempTable);
             setTableContent(tempTable);
@@ -195,7 +195,7 @@ export default function GenerateReport() {
         } else {
             tempTable[idx].isCheck = false;
             tempTable[idx].filterCheck = false;
-            tempTable[idx].strSandi = e.target.value;
+            tempTable[idx].strKondisi = e.target.value;
             tempTable[idx].filterVal = "";
             console.log("Temp Table: ", tempTable);
             setTableContent(tempTable);
@@ -215,10 +215,10 @@ export default function GenerateReport() {
         let sandiStr = events[1];
         console.log("index: ", index);
         console.log("sandistr: ", sandiStr);
-        //columns[index].strSandi = sandiStr;
+        //columns[index].strKondisi = sandiStr;
         const tempTable = [...tableContent];
         tempTable[index].isCheck = true;
-        tempTable[index].strSandi = sandiStr;
+        tempTable[index].strKondisi = sandiStr;
         tempTable[index].filterCheck = true;
         tempTable[index].filterVal = "IN";
         setTableContent(tempTable);
@@ -232,8 +232,8 @@ export default function GenerateReport() {
         setSelectedRows([]);
         tableContent.map((row) => {
             if (row.isCheck) {
-                if (row.strSandi) {
-                    row.strSandi = row.strSandi;
+                if (row.strKondisi) {
+                    row.strKondisi = row.strKondisi;
                 }
                 selectedRows.push(row);
             }
@@ -249,22 +249,16 @@ export default function GenerateReport() {
         if (obj.length !== 0) {
             obj.map((row) => {
                 if (arrField !== '') {
-                    if (row.columnType === 'number'
-                        && row.columnType === 'bigint'
-                        && row.columnType === 'float'
-                        && row.filterCheck === false
-                        && row.filterVal === '') {
+                    if ((row.columnType === 'number' || row.columnType === 'bigint' || row.columnType === 'float')
+                        && row.filterCheck === false && row.filterVal === '') {
                         agrQue = 'SUM(' + row.columnName + ')'; // Set Agr
-                        arrField = arrField + ", " + agrQue;
+                        arrField = arrField + ', ' + agrQue;
                     } else {
                         arrField = arrField + ', ' + row.columnName;
                     }
                 } else {
-                    if (row.columnType === 'number'
-                        && row.columnType === 'bigint'
-                        && row.columnType === 'float'
-                        && row.filterCheck === false
-                        && row.filterVal === '') {
+                    if ((row.columnType === 'number' || row.columnType === 'bigint' || row.columnType === 'float')
+                        && row.filterCheck === false && row.filterVal === '=') {
                         agrQue = 'SUM(' + row.columnName + ')';
                         arrField = agrQue;
                     } else {
@@ -274,21 +268,23 @@ export default function GenerateReport() {
                 if (row.filterCheck == true && row.filterVal !== '') { // Set Where
                     if (whereQue !== '') {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
-                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
-                        } else if (row.colType === 'number') {
-                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
+                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + '(' + row.strKondisi + ')';
                         }
+                        /*else if (row.colType === 'number') {
+                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + row.strKondisi;
+                        }*/
                         else {
-                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
+                            whereQue = whereQue + ' AND\n' + row.columnName + ' ' + row.filterVal + ' ' + row.strKondisi;
                         }
                     } else {
                         if (row.filterVal === 'IN' || row.filterVal === 'NOT IN') {
-                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + '(' + row.strSandi + ')';
-                        } else if (row.colType === 'number') {
-                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
+                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + '(' + row.strKondisi + ')';
                         }
+                        /*else if (row.colType === 'number') {
+                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + row.strKondisi;
+                        }*/
                         else {
-                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + row.strSandi;
+                            whereQue = 'WHERE ' + row.columnName + ' ' + row.filterVal + ' ' + row.strKondisi;
                         }
                     }
                 } else {
@@ -296,7 +292,7 @@ export default function GenerateReport() {
                 }
             });
         }
-        let resQuery = 'SELECT ' + 'PERIODELAPORAN, ' + arrField + ' FROM `mart.antasena`.`krp01` ' + '\n' + whereQue + " AND PERIODEDATA = '2022-11-30'" + " AND PERIODELAPORAN = 'M' " + '\n' + 'LIMIT 10';
+        let resQuery = 'SELECT ' + arrField + ' FROM `' + dbTableName.dbName + '`.`' + tableName + '`' + '\n' + whereQue + " AND PERIODEDATA = '2022-11-30'" + '\n' + 'LIMIT 10';
         setMaxRowResult(resQuery);
         setQueryRes(resQuery);
         console.log("Result Query: ", resQuery);
@@ -495,12 +491,32 @@ export default function GenerateReport() {
                                                         color="primary"
                                                         indeterminate={selectedRows.length > 0 && selectedRows.length < tableContent.length}
                                                         checked={selectedRows.length === tableContent.length}
-                                                        onChange={() => {
-                                                            if (selectedRows.length === 0) {
+                                                        onChange={(event) => {
+                                                           /* if (selectedRows.length === 0) {
                                                                 setSelectedRows([]);
+                                                            } else {*/
+                                                            if (event.target.checked) {
+                                                                const newSelected = tableContent.map((n) => n);
+                                                                newSelected.forEach(e => {
+                                                                    e.isCheck = true
+                                                                })
+                                                                setSelectedRows(newSelected);
+                                                                return;
                                                             } else {
-                                                                setSelectedRows(tableContent.map((row) => row.id));
+                                                                //const newSelected = tableContent.map((n) => n);
+                                                                setSelectedRows([]);
+                                                                setQueryRes('');
+                                                                tableContent.forEach(e => {
+                                                                    e.isCheck = false
+                                                                })
+                                                                //setSelectedRows(newSelected);
+                                                                
+                                                                return;
+                                                                
                                                             }
+
+                                                                
+                                                            //}
                                                         }}
                                                     /> &nbsp; &nbsp;
                                                 </TableCell>
@@ -559,7 +575,7 @@ export default function GenerateReport() {
                                                                         id="filled-basic"
                                                                         variant="filled"
                                                                         type="search"
-                                                                        defaultValue={row.strSandi}
+                                                                        defaultValue={row.strKondisi}
                                                                         onChange={(e) => handleSandi(e, index)}
                                                                     />
                                                                 </FormControl>
@@ -570,8 +586,8 @@ export default function GenerateReport() {
                                                                         variant="filled"
                                                                         type="search"
                                                                         name="freeTxt"
-                                                                        defaultValue={row.strSandi}
-                                                                        value={row.strSandi}
+                                                                        defaultValue={row.strKondisi}
+                                                                        value={row.strKondisi}
                                                                         onChange={(e) => handleEdit(e, index)}
                                                                     /> { }
                                                                     <DevDialog

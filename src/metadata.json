@@ -28,6 +28,36 @@
 		},
 		{
 			"columnType": "string",
+			"columnName": "periodelaporan",
+			"metadata": [
+				{
+					"sandi": "D",
+					"keterangan": "Harian"
+				},
+				{
+					"sandi": "W",
+					"keterangan": "Mingguan"
+				},
+				{
+					"sandi": "M",
+					"keterangan": "Bulanan"
+				},
+				{
+					"sandi": "Q",
+					"keterangan": "4 Bulan"
+				},
+				{
+					"sandi": "H",
+					"keterangan": "Setengah Tahun"
+				},
+				{
+					"sandi": "Y",
+					"keterangan": "Tahunan"
+				}
+			]
+		},
+		{
+			"columnType": "string",
 			"columnName": "jeniskreditpembiayaan",
 			"metadata": [
 				{
