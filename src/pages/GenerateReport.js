@@ -70,6 +70,7 @@ export default function GenerateReport() {
                 .then((obj) => {
                     res = obj.columns;
                     setColumnData(res);
+                    changeTableColumns();
                     console.log("Columns ", JSON.stringify(res));
                     //setErrorState(false);
                     
@@ -298,6 +299,26 @@ export default function GenerateReport() {
         console.log("Result Query: ", resQuery);
     }
 
+    const changeTableColumns = () => {
+        let columnObj = [];
+        if (columnData.length > 0) {
+            for (var i = 0; i < columnData.length; i++) {
+                let dataColumn = null;
+                for (var j = 0; j < availMeta.length; j++) {
+                    if (columnData[i].columnName === availMeta[j].columnName) {
+                        dataColumn = columnObject(i, columnData[i].columnName, columnData[i].columnType, false, '', false, '', availMeta[j].metadata);
+                        continue;
+                    } else if ((j === availMeta.length - 1) && (dataColumn === null)) {
+                        dataColumn = columnObject(i, columnData[i].columnName, columnData[i].columnType, false, '', false, '', "");
+                    }
+                }
+                columnObj.push(dataColumn);
+            }
+            setTableContent(columnObj);
+            console.log("Col Obj : ", columnObj);
+        }
+    }
+
     const setMaxRowResult = (q) => {
         let rowMax = q.split(/\r\n|\r|\n/).length + 1;
         setResLine(rowMax);
@@ -489,7 +510,7 @@ export default function GenerateReport() {
                                                 <TableCell align="left" padding="checkbox" width='5%'>
                                                     <Checkbox
                                                         color="primary"
-                                                        indeterminate={selectedRows.length > 0 && selectedRows.length < tableContent.length}
+                                                        //indeterminate={selectedRows.length > 0 && selectedRows.length < tableContent.length}
                                                         checked={selectedRows.length === tableContent.length}
                                                         onChange={(event) => {
                                                            /* if (selectedRows.length === 0) {

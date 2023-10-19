@@ -44,14 +44,14 @@
 				},
 				{
 					"sandi": "Q",
-					"keterangan": "4 Bulan"
+					"keterangan": "Triwulan"
 				},
 				{
-					"sandi": "H",
-					"keterangan": "Setengah Tahun"
+					"sandi": "S",
+					"keterangan": "Semesteran"
 				},
 				{
-					"sandi": "Y",
+					"sandi": "A",
 					"keterangan": "Tahunan"
 				}
 			]
