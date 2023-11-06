@@ -47,10 +47,12 @@ export default function GenerateReport() {
     const [tableContent, setTableContent] = React.useState([]);
     const [queryRes, setQueryRes] = React.useState('');
     const [resLine, setResLine] = React.useState(2);
+    const [reportName, setReportName] = React.useState('');
 
     const handleChangeDbName = (value) => {
+        let nameFReport;
         if (tableName) {
-
+            setReportName('');
         }
         setDBTableName({
             dbName: value,
@@ -63,8 +65,14 @@ export default function GenerateReport() {
 
     const handleChangeTableName = async (value) => {
         let res;
+        let nameFReport;
         setQueryRes('');
+        
         if (value) {
+            if (tableName === reportName) {
+                nameFReport = nameFReport + '_' + value;
+                setReportName(nameFReport)
+            }
             setTableName(value);
             await getColumn({ db: dbTableName.dbName, table: value })
                 .then((obj) => {
@@ -208,6 +216,7 @@ export default function GenerateReport() {
         let sum;
         sum = await e.target.value;
         setQueryRes(sum);
+        //console.log('FileName : ', reportName)
     }
 
     const onSandiVal = ( events ) => {
@@ -247,6 +256,7 @@ export default function GenerateReport() {
         let arrField = '';
         let whereQue = '';
         let agrQue = '';
+        let nameRpt = '';
         if (obj.length !== 0) {
             obj.map((row) => {
                 if (arrField !== '') {
@@ -293,10 +303,13 @@ export default function GenerateReport() {
                 }
             });
         }
-        let resQuery = 'SELECT ' + arrField + ' FROM `' + dbTableName.dbName + '`.`' + tableName + '`' + '\n' + whereQue + " AND PERIODEDATA = '2022-11-30'" + '\n' + 'LIMIT 10';
+        let resQuery = 'SELECT ' + arrField + ' FROM `' + dbTableName.dbName + '`.`' + tableName + '`' + '\n' + whereQue + " AND PERIODEDATA = '2023-10-30'" + '\n' + 'LIMIT 10';
+        nameRpt = dbTableName.dbName + '_' + tableName;
         setMaxRowResult(resQuery);
         setQueryRes(resQuery);
+        setReportName(nameRpt);
         console.log("Result Query: ", resQuery);
+        console.log("Name File : ", reportName)
     }
 
     const changeTableColumns = () => {
@@ -629,16 +642,18 @@ export default function GenerateReport() {
                             <TextField
                                 margin="normal"
                                 id="filled-multiline-static"
-                                label="Multiline"
+                                label="Query"
                                 multiline
                                 rows={resLine}
                                 defaultValue="Default Value"
                                 variant="filled"
                                 fullWidth="true"
                                 value={queryRes}
-                                onChange={(e) => handleSum(e)}
+                                onChange={(e) => setQueryRes(e.target.value)}
                             />&nbsp;
-                        <AlertDialog result={queryRes}
+                        <AlertDialog
+                                result={queryRes}
+                                report={reportName}
                         />
                         </Grid>      
                 }

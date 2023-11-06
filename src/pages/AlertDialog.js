@@ -33,6 +33,7 @@ export default function AlertDialog(props) {
     const [columnArr, setColumnArr] = React.useState([]);
 
     var result = props.result;
+    var reportName = props.report;
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -57,8 +58,15 @@ export default function AlertDialog(props) {
         setSbErrorOpen(false);
     }
 
+    function emptyDataRespon() {
+        return
+        <Alert severity="warning" sx={{ width: '100%' }}>
+            Empty Result
+        </Alert>
+    }
+
     async function getQuery() {
-        let res;
+        let res = null;
 
         if (result !== null) {
             const que = {
@@ -69,11 +77,15 @@ export default function AlertDialog(props) {
                 sendQuery(que)
                     .then(response => {
                         if (response.status === 200) {
-                            res = response.data;
-                            setResData(JSON.parse(JSON.stringify(res)));
-                            setIsSuccess(true);
-                            setSbOpen(true);
-                            console.log("QUERY RESULT : ", JSON.stringify(response));
+                            if (response.data.length !== 0) {
+                                res = response.data;
+                                setResData(JSON.parse(JSON.stringify(res)));
+                                setIsSuccess(true);
+                                setSbOpen(true);
+                                console.log("QUERY RESULT : ", JSON.stringify(response));
+                            } else
+                                emptyDataRespon();
+                            
                         } else throw new Error(response);
                     })
                     .catch((e) => {
@@ -133,6 +145,7 @@ export default function AlertDialog(props) {
 
         if (result !== '')
             fillColumnArr()
+        console.log('FileName : ', reportName)
             //callQuery()
         /*if (queryRes.length > 0)
             getQuery()*/
@@ -151,7 +164,7 @@ export default function AlertDialog(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
+                <DialogTitle id="alert-dialog-title" align="center">
                     {"Query Result"}
                 </DialogTitle>
                 <DialogContent>
@@ -165,9 +178,14 @@ export default function AlertDialog(props) {
                                     bottom: 0,
                                     left: 24,
                                 }}>
-                                    <Stack spacing={2}>
+                                    <Stack spacing={2} display="inline-flex">
                                         {/*<Item>*/}
-                                        <Snackbar open={sbOpen} autoHideDuration={6000} onClose={handleSbClose}>
+                                        <Snackbar
+                                            open={sbOpen}
+                                            autoHideDuration={6000}
+                                            onClose={handleSbClose}
+                                            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                        >
                                             <Alert severity="success" sx={{ width: '100%' }}>
                                                 Query Success
                                             </Alert>
@@ -175,6 +193,7 @@ export default function AlertDialog(props) {
                                         <ResTable
                                             dataResult={resData}
                                             columnTable={columnArr}
+                                            report={reportName}
                                         />
                                         {/*</Item>*/}
                                         {/*<Item>*/}
@@ -190,7 +209,7 @@ export default function AlertDialog(props) {
                                     <Snackbar open={setSbErrorOpen} autoHideDuration={6000} onClose={handleClose}>
                                     <Alert severity="error">
                                         <AlertTitle style={{ display: "flex" }}>Error</AlertTitle>
-                                        Error! — <strong>Query submit failed, Please Check Query or Service</strong>
+                                        Error!! <strong>Query submit failed, Please Check Query or Service</strong>
                                         </Alert>
                                     </Snackbar>
                                 )
